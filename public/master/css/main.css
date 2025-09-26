@@ -1,0 +1,64 @@
+.width-100{
+    width: 100% !important;
+}
+
+.border-radius-50{
+    border-radius: 50px !important;
+}
+
+.text-white{
+    color: #ffffff !important;
+}
+
+.footer-bottom{
+    background-color: var(--primary-darken) !important;
+}
+
+#map{
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 250px !important;
+}
+.text-price{
+    font-size: 15px !important;
+    text-align: right !important;
+    line-height: normal;
+}
+
+.about{
+    margin-top: 130px;
+    position: relative;
+    z-index: 0;
+}
+
+.about::before {
+    content: '';
+    position: absolute;
+    background-color: rgba(var(--primary-rgb), 0.6);
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+
+.about .contanier {
+    position: relative;
+    z-index: 2; /* Hace que quede encima del ::before */
+}
+
+.plyr--video{
+    height: 100% !important;
+}
+
+b, strong{
+    color: var(--primary-darken);
+}
+
+.flex-direction-row-reverse{
+    flex-direction: row-reverse !important;
+}
+
+.img-plan{
+    max-height: 150px !important;
+}

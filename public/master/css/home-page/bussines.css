@@ -1,0 +1,15 @@
+.contanier-info{
+    background-color: var(--primary-color);
+    border-radius: 60px;
+    padding: 35px 80px;
+    text-align: center;
+}
+
+.contanier-info .card{
+    max-width: 800px;
+    margin: auto;
+}
+
+.contanier-info strong{
+    color: var(--secondary-color);
+}

@@ -1,0 +1,35 @@
+.home-1{
+    min-height: calc(90vh - 80px) !important;
+    margin-top: 130px;
+    border-radius: 60px;
+    padding: 20px 0px;
+}
+
+.btn-home-1{
+    font-size: 20px !important;
+    font-weight: bold !important;
+}
+
+.indicadores-home-1{
+    display: flex !important;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items:flex-end;
+    height: 100%;
+}
+
+.indicadores-home-1>div{
+    /* max-width: 150px; */
+    display: flex;
+    flex-wrap: wrap;
+    background-color: rgba(var(--primary-rgb), .8);
+    padding: 20px;
+    border-radius: 30px;
+}
+
+.indicador-detail{
+    display: flex;
+    justify-self: end;
+    font-size: 25px;
+}
+

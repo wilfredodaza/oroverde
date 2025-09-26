@@ -1,0 +1,14 @@
+.span-user{
+    padding: 5px;
+    background-color: var(--primary-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: var(--secondary-color);
+    box-shadow: 0px 0px 5px rgba(var(--primary-rgb), 0.8);
+    border-radius: 50%;
+}
+
+.img-blog{
+    max-height: 150px;
+}

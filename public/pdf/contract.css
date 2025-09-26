@@ -1,0 +1,14 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.title{
+    font-size: 18px;
+    text-align: center;
+}
+
+.content{
+    padding: 0 80px;
+    text-align: justify;
+    font-size: 15px;
+}
