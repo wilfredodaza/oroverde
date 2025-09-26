@@ -84,144 +84,148 @@
 
     <!-- Weekly Sales with bg-->
     <div class="col-12 col-xxl-8 col-md-6">
-      <div
-        <?php $color = "green" ?>
-        class="swiper-container swiper-container-horizontal swiper h-100"
-        id="swiper-weekly-sales-with-bg">
-        <div class="swiper-wrapper">
-          <?php foreach($projects as $key => $project): ?>
-            <?php
-              $movementsTotal = array_reduce($project->movements, function($acc, $movement){
-                return $acc + (in_array($movement->type_movement_id, ["1"]) && in_array($movement->state_id, ["7"]) ? $movement->value : 0);
-              });
-            ?>
-            <div class="swiper-slide pb-5">
-              <div class="row">
-                <div class="col-12">
-                  <h5 class="mb-1 text-center"><?= $project->name ?></h5>
-                  <div class="d-flex flex-wrap justify-content-around align-items-center gap-2 mb-2">
-                    <div><b>Total:</b> $ <?= number_format($movementsTotal, 0, '', '.') ?></div>
-                    <div><b>Estado:</b><span class="badge <?= $project->state->background ?> <?= $project->state->font ?>"> <?= $project->state->name ?></span></div>
-                  </div>
-                  <div class="d-flex flex-wrap justify-content-around align-items-center gap-2 mb-2">
-                    <?php
-                      $fechaInicio = new DateTime($project->date);
-                      $hoy = new DateTime();
+      <?php $color = "green" ?>
+      <?php if(!empty($projects)): ?>
+        <div
+          class="swiper-container swiper-container-horizontal swiper h-100"
+          id="swiper-weekly-sales-with-bg">
+          <div class="swiper-wrapper">
+            <?php foreach($projects as $key => $project): ?>
+              <?php
+                $movementsTotal = array_reduce($project->movements, function($acc, $movement){
+                  return $acc + (in_array($movement->type_movement_id, ["1"]) && in_array($movement->state_id, ["7"]) ? $movement->value : 0);
+                });
+              ?>
+              <div class="swiper-slide pb-5">
+                <div class="row">
+                  <div class="col-12">
+                    <h5 class="mb-1 text-center"><?= $project->name ?></h5>
+                    <div class="d-flex flex-wrap justify-content-around align-items-center gap-2 mb-2">
+                      <div><b>Total:</b> $ <?= number_format($movementsTotal, 0, '', '.') ?></div>
+                      <div><b>Estado:</b><span class="badge <?= $project->state->background ?> <?= $project->state->font ?>"> <?= $project->state->name ?></span></div>
+                    </div>
+                    <div class="d-flex flex-wrap justify-content-around align-items-center gap-2 mb-2">
+                      <?php
+                        $fechaInicio = new DateTime($project->date);
+                        $hoy = new DateTime();
 
-                      $aniosTranscurridos = $hoy->diff($fechaInicio)->y; 
-                      $vigenciaRestante = $project->project_years - $aniosTranscurridos;
-                    ?>
-                    <div><b>Fecha Inicio:</b> <?= $project->date ?></div>
-                    <div><b>Vigencia:</b> <?= $vigenciaRestante >= 0 ? $vigenciaRestante : 0 ?> <?= $vigenciaRestante != 1 ? "años" : "año" ?> </div>
-                  </div>
-                  <div class="d-flex flex-wrap justify-content-around align-items-center gap-2 mb-2">
-                    <?php
-                      $unidsProduc = array_reduce($project->movements, function($acc, $movement){
-                        return $acc + (in_array($movement->type_movement_id, ["1"]) && in_array($movement->state_id, ["7"]) ? $movement->details[0]->quantity : 0);
-                      });
+                        $aniosTranscurridos = $hoy->diff($fechaInicio)->y; 
+                        $vigenciaRestante = $project->project_years - $aniosTranscurridos;
+                      ?>
+                      <div><b>Fecha Inicio:</b> <?= $project->date ?></div>
+                      <div><b>Vigencia:</b> <?= $vigenciaRestante >= 0 ? $vigenciaRestante : 0 ?> <?= $vigenciaRestante != 1 ? "años" : "año" ?> </div>
+                    </div>
+                    <div class="d-flex flex-wrap justify-content-around align-items-center gap-2 mb-2">
+                      <?php
+                        $unidsProduc = array_reduce($project->movements, function($acc, $movement){
+                          return $acc + (in_array($movement->type_movement_id, ["1"]) && in_array($movement->state_id, ["7"]) ? $movement->details[0]->quantity : 0);
+                        });
 
-                      $unidsProducSale = array_reduce($project->movements, function($acc, $movement) use($stateMapping) {
-                        return $acc + (in_array($movement->type_movement_id, ["2"]) && in_array($movement->state_id, $stateMapping[2]) ? $movement->details[0]->quantity : 0);
-                      });
+                        $unidsProducSale = array_reduce($project->movements, function($acc, $movement) use($stateMapping) {
+                          return $acc + (in_array($movement->type_movement_id, ["2"]) && in_array($movement->state_id, $stateMapping[2]) ? $movement->details[0]->quantity : 0);
+                        });
+                      ?>
+                      <div><b>Unidades Productivas:</b> <?= number_format($unidsProduc, 0, "", ".") ?></div>
+                      <div><b>Unidades Productivas Vendidas:</b> <?= number_format($unidsProducSale, 0, "", ".") ?></div>
+                    </div>
+                  </div>
+                  <div class="col-lg-12 col-md-12 col-12 order-2 order-md-1 mt-1">
+                    <!-- <h6 class="mt-0 mt-md-4 mb-4 py-1">Movimientos del proyecto</h6> -->
+                    <?php
+                      $total = count($type_movements);
+                      $size = ceil($total / 2);
+                      $type_movements_chunks = array_chunk($type_movements, $size);
                     ?>
-                    <div><b>Unidades Productivas:</b> <?= number_format($unidsProduc, 0, "", ".") ?></div>
-                    <div><b>Unidades Productivas Vendidas:</b> <?= number_format($unidsProducSale, 0, "", ".") ?></div>
-                  </div>
-                </div>
-                <div class="col-lg-12 col-md-12 col-12 order-2 order-md-1 mt-1">
-                  <!-- <h6 class="mt-0 mt-md-4 mb-4 py-1">Movimientos del proyecto</h6> -->
-                  <?php
-                    $total = count($type_movements);
-                    $size = ceil($total / 2);
-                    $type_movements_chunks = array_chunk($type_movements, $size);
-                  ?>
-                  <div class="row g-4">
-                    <?php foreach ($type_movements_chunks as $key => $type_movements_chunk): ?>
-                      <div class="col-sm-6">
-                        <ul class="list-unstyled mb-0">
-                          <?php foreach ($type_movements_chunk as $key => $type_chunk): ?>
-                            <li class="d-flex mb-5 align-items-center justify-content-center">
-                              <?php
-                                $movementTotal = array_reduce($project->movements, function($acc, $movement) use ($type_chunk, $stateMapping){
-                                  return $acc + (in_array($movement->type_movement_id, [$type_chunk->id]) && in_array($movement->state_id, $stateMapping[$type_chunk->id]) ? $movement->value : 0);
-                                });
-                              ?>
-                              <span class="badge text-<?= $type_chunk->color ?> text-darken-5 <?= $type_chunk->color ?> lighten-5">$ <?= number_format($movementTotal, 0, '', '.') ?></span>
-                              <p class="mb-0 mx-2 text-truncate"><?= $type_chunk->name ?></p>
-                            </li>
-                          <?php endforeach ?>
-                        </ul>
-                      </div>
-                    <?php endforeach ?>
-                    <!-- <div class="col-sm-6">
-                      <ul class="list-unstyled mb-0">
-                        <li class="d-flex mb-5 align-items-center">
-                          <p class="mb-0 me-3 weekly-sales-text-bg-primary fw-medium">50</p>
-                          <p class="mb-0 text-truncate">Accessories</p>
-                        </li>
-                        <li class="d-flex align-items-center">
-                          <p class="mb-0 me-3 weekly-sales-text-bg-primary fw-medium">38</p>
-                          <p class="mb-0 text-truncate">Computers</p>
-                        </li>
-                      </ul>
-                    </div> -->
-                  </div>
-                  <!-- Total Impression & Order Chart -->
-                <div class="col-lg-12 col-sm-12 col-md-12">
-                  <div class="h-100">
-                    <div class="card-body pb-0">
-                      <div class="d-flex align-items-center justify-content-center gap-4">
-                        <?php
-                          $unidadesCargadas = array_reduce($project->movements, function($acc, $movement) use ($stateMapping) {
-                              return $acc + (
-                                  in_array($movement->type_movement_id, [1]) 
-                                  && in_array($movement->state_id, $stateMapping[1]) 
-                                  ? ($movement->details[0]->quantity ?? 0) 
-                                  : 0
-                              );
-                          }, 0);
-                          
-                          $unidadesVendidas = array_reduce($project->movements, function($acc, $movement) use ($stateMapping) {
-                              return $acc + (
-                                  in_array($movement->type_movement_id, [2]) 
-                                  && in_array($movement->state_id, $stateMapping[2]) 
-                                  ? ($movement->details[0]->quantity ?? 0) 
-                                  : 0
-                              );
-                          }, 0);
-                          
-                          // Evitar división por cero
-                          $porcentaje = $unidadesCargadas > 0 
-                              ? number_format(($unidadesVendidas * 100) / $unidadesCargadas, 0, '.', '') 
-                              : 0;
-                        ?>
-                        <div>
-                          <div
-                            class="chart-progress"
-                            data-color="primary"
-                            data-series="<?= $porcentaje ?>"
-                            data-icon=""></div>
+                    <div class="row g-4">
+                      <?php foreach ($type_movements_chunks as $key => $type_movements_chunk): ?>
+                        <div class="col-sm-6">
+                          <ul class="list-unstyled mb-0">
+                            <?php foreach ($type_movements_chunk as $key => $type_chunk): ?>
+                              <li class="d-flex mb-5 align-items-center justify-content-center">
+                                <?php
+                                  $movementTotal = array_reduce($project->movements, function($acc, $movement) use ($type_chunk, $stateMapping){
+                                    return $acc + (in_array($movement->type_movement_id, [$type_chunk->id]) && in_array($movement->state_id, $stateMapping[$type_chunk->id]) ? $movement->value : 0);
+                                  });
+                                ?>
+                                <span class="badge text-<?= $type_chunk->color ?> text-darken-5 <?= $type_chunk->color ?> lighten-5">$ <?= number_format($movementTotal, 0, '', '.') ?></span>
+                                <p class="mb-0 mx-2 text-truncate"><?= $type_chunk->name ?></p>
+                              </li>
+                            <?php endforeach ?>
+                          </ul>
                         </div>
-                        <div>
-                          <div class="card-info">
-                            <div class="d-flex align-items-center gap-2 flex-wrap">
-                              <h5 class="mb-0"><?= number_format($unidadesVendidas, 0, '', '.') ." de ". number_format($unidadesCargadas, 0, '', '.') ?> unidades</h5>
+                      <?php endforeach ?>
+                      <!-- <div class="col-sm-6">
+                        <ul class="list-unstyled mb-0">
+                          <li class="d-flex mb-5 align-items-center">
+                            <p class="mb-0 me-3 weekly-sales-text-bg-primary fw-medium">50</p>
+                            <p class="mb-0 text-truncate">Accessories</p>
+                          </li>
+                          <li class="d-flex align-items-center">
+                            <p class="mb-0 me-3 weekly-sales-text-bg-primary fw-medium">38</p>
+                            <p class="mb-0 text-truncate">Computers</p>
+                          </li>
+                        </ul>
+                      </div> -->
+                    </div>
+                    <!-- Total Impression & Order Chart -->
+                  <div class="col-lg-12 col-sm-12 col-md-12">
+                    <div class="h-100">
+                      <div class="card-body pb-0">
+                        <div class="d-flex align-items-center justify-content-center gap-4">
+                          <?php
+                            $unidadesCargadas = array_reduce($project->movements, function($acc, $movement) use ($stateMapping) {
+                                return $acc + (
+                                    in_array($movement->type_movement_id, [1]) 
+                                    && in_array($movement->state_id, $stateMapping[1]) 
+                                    ? ($movement->details[0]->quantity ?? 0) 
+                                    : 0
+                                );
+                            }, 0);
+                            
+                            $unidadesVendidas = array_reduce($project->movements, function($acc, $movement) use ($stateMapping) {
+                                return $acc + (
+                                    in_array($movement->type_movement_id, [2]) 
+                                    && in_array($movement->state_id, $stateMapping[2]) 
+                                    ? ($movement->details[0]->quantity ?? 0) 
+                                    : 0
+                                );
+                            }, 0);
+                            
+                            // Evitar división por cero
+                            $porcentaje = $unidadesCargadas > 0 
+                                ? number_format(($unidadesVendidas * 100) / $unidadesCargadas, 0, '.', '') 
+                                : 0;
+                          ?>
+                          <div>
+                            <div
+                              class="chart-progress"
+                              data-color="primary"
+                              data-series="<?= $porcentaje ?>"
+                              data-icon=""></div>
+                          </div>
+                          <div>
+                            <div class="card-info">
+                              <div class="d-flex align-items-center gap-2 flex-wrap">
+                                <h5 class="mb-0"><?= number_format($unidadesVendidas, 0, '', '.') ." de ". number_format($unidadesCargadas, 0, '', '.') ?> unidades</h5>
+                              </div>
+                              <p class="mb-0 mt-1">Total Unidades Vendidas</p>
                             </div>
-                            <p class="mb-0 mt-1">Total Unidades Vendidas</p>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <!--/ Total Impression & Order Chart -->
+                  <!--/ Total Impression & Order Chart -->
+                  </div>
                 </div>
               </div>
-            </div>
-          <?php endforeach ?>
+            <?php endforeach ?>
+          </div>
+          <div class="swiper-pagination text-green"></div>
         </div>
-        <div class="swiper-pagination text-green"></div>
-      </div>
+      <?php else: ?>
+        <h3>Sin proyectos para visualizar</h3>
+      <?php endif ?>
     </div>
     <!--/ Weekly Sales with bg-->
 

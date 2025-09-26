@@ -16,6 +16,8 @@ class TypeMovement extends Model
         'state_id',
         'name',
         'abbreviation',
+        'color',
+        'code',
     ];
 
     protected bool $allowEmptyInserts = false;

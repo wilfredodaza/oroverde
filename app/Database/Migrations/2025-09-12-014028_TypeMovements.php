@@ -13,6 +13,8 @@ class TypeMovements extends Migration
             'state_id'      => ['type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE, 'null' => FALSE],
             'name'          => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => TRUE],
             'abbreviation'  => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => TRUE],
+            'color'         => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => TRUE],
+            'code'          => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => TRUE],
 
             'created_at'    => ['type' => 'DATETIME', 'null' => TRUE],
             'updated_at'    => ['type' => 'DATETIME', 'null' => TRUE],

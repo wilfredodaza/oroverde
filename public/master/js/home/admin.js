@@ -25,6 +25,7 @@ $(() => {
 async function loadMovementsGraph(){
     const colors = await getColors();
 
+
     const salesCountryChartEl = document.querySelector('#graph-movements'),
     salesCountryChartConfig = {
         chart: {
@@ -50,6 +51,8 @@ async function loadMovementsGraph(){
                     const total = movements.reduce((acc, m) => {
                         return acc + (state_m.includes(m.state_id) ? parseFloat(m.value) : 0);
                     }, 0);
+
+                    console.log(total)
     
                     return total;
                 })
@@ -73,6 +76,7 @@ async function loadMovementsGraph(){
             offsetY: 8,
             offsetX: 11,
             formatter: function (val) {
+                console.log(val)
                 if (val >= 1e9) return (val / 1e9).toFixed(1).replace(/\.0$/, '') + ' B';
                 if (val >= 1e6) return (val / 1e6).toFixed(1).replace(/\.0$/, '') + ' M';
                 if (val >= 1e3) return (val / 1e3).toFixed(1).replace(/\.0$/, '') + ' K';
@@ -107,6 +111,7 @@ async function loadMovementsGraph(){
         },
         colors: type_movements.map(tm => {
             const color = colors.find(c => c.color == tm.color);
+            console.log(color)
             return color ? color.hex : '#ccc';
         }),
         grid: {
