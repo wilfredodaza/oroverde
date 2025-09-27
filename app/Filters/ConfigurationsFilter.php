@@ -13,7 +13,7 @@ class ConfigurationsFilter implements FilterInterface
     public function before(RequestInterface $request, $arguments = null)
     {
       $c_model = new Configuration();
-      $config = $c_model->first();
+      $config = $c_model->asObject()->first();
       if(empty($config)){
         return redirect()->to(base_url(['login']));
       }else if($config->register == 'inactive'){

@@ -8,6 +8,9 @@ use App\Models\User;
 use Config\Services;
 use App\Models\Plantilla;
 use App\Models\Password;
+use App\Models\Customer;
+use App\Models\TypeDocument;
+
 use CodeIgniter\API\ResponseTrait;
 
 
@@ -117,72 +120,94 @@ class AuthController extends BaseController
     public function register()
     {
         $validation = Services::validation();
-        return view('auth/register', ['validation' => $validation]);
+        $td_model = new TypeDocument();
+        $type_documents = $td_model->findAll();
+
+        return view('auth/register', [
+            'validation'        => $validation,
+            'type_documents'    => $type_documents
+        ]);
     }
 
     public function create()
     {
         $validation = Services::validation();
-        if ($this->validate([
-            'name'              => 'required|max_length[45]',
-            'username'          => 'required|is_unique[users.username]|max_length[40]',
-            'email'             => 'required|valid_email|is_unique[users.email]|max_length[100]',
-            'password'          => 'required|min_length[6]',
-            'password_confirm'  => 'required|matches[password]',
-        ], [
-            'name' => [
-                'required' => 'El campo Nombres y Apellidos es obrigatorio.',
-                'max_length' => 'El campo Nombres Y Apellidos no debe tener mas de 45 caracteres.'
-            ],
-            'username' => [
-                'required' => 'El campo Nombre de Usuario es obligatorio',
-                'is_unique' => 'Lo sentimos. El nombre de usuario ya se encuentra registrado.',
-                'max_length' => 'El campo Nombre de Usuario no puede superar mas de 20 caracteres.'
-            ],
-            'email' => [
-                'required' => 'El campo Correo Electronico es obrigatorio.',
-                'is_unique' => 'Lo sentimos. El correo ya se encuentra registrado.'
-            ],
-            'password' => [
-                'required' => 'El campo Contraseña es obligatorio.',
-                'min_length' => 'El campo Contraseña debe tener minimo 6 caracteres.'
-            ],
-            'password_confirm' => [
-                'required'      => 'La confirmacion de la contraseña es obligatoria.',
-                'matches'       => 'Las contraseñas no coinciden.'
-            ]
+        try{
+            if ($this->validate([
+                'name'              => 'required|max_length[45]',
+                'username'          => 'required|is_unique[users.username]|max_length[40]',
+                'email'             => 'required|valid_email|is_unique[users.email]|max_length[100]',
+                'password'          => 'required|min_length[6]',
+                'password_confirm'  => 'required|matches[password]',
+            ], [
+                'name' => [
+                    'required' => 'El campo Nombres y Apellidos es obrigatorio.',
+                    'max_length' => 'El campo Nombres Y Apellidos no debe tener mas de 45 caracteres.'
+                ],
+                'username' => [
+                    'required' => 'El campo Nombre de Usuario es obligatorio',
+                    'is_unique' => 'Lo sentimos. El nombre de usuario ya se encuentra registrado.',
+                    'max_length' => 'El campo Nombre de Usuario no puede superar mas de 20 caracteres.'
+                ],
+                'email' => [
+                    'required' => 'El campo Correo Electronico es obrigatorio.',
+                    'is_unique' => 'Lo sentimos. El correo ya se encuentra registrado.'
+                ],
+                'password' => [
+                    'required' => 'El campo Contraseña es obligatorio.',
+                    'min_length' => 'El campo Contraseña debe tener minimo 6 caracteres.'
+                ],
+                'password_confirm' => [
+                    'required'      => 'La confirmacion de la contraseña es obligatoria.',
+                    'matches'       => 'Las contraseñas no coinciden.'
+                ]
 
-        ])) {
-            $info = $this->request->getJson();
-            $data = [
-                'name' => $info->name,
-                'username' => $info->username,
-                'email' => $info->email,
-                'status' => 'inactive',
-                'role_id' => 3
-            ];
+            ])) {
+                $info = $this->request->getJson();
 
-            $u_model = new User();
-            $u_model->save($data);
+                
 
-            $user_id = $u_model->insertID();
-            $p_model = new Password();
-            $p_model->save([
-                'user_id'   => $user_id,
-                'password'  => password_hash($this->request->getPost('password'), PASSWORD_DEFAULT)
-            ]);
-            return $this->respond([
-                'status'    => '200',
-                'title'     => 'Creación de éxitosa',
-                'message'   => "Esperando a activar la cuenta."
-            ]);
-        } else {
-            $errors = implode("<br>", $validation->getErrors());
-            return $this->respond([
-                'status'    => '403',
-                'title'     => 'Error en los datos de creación.',
-                'message'   => $errors
-            ]);
+                $c_model = new Customer();
+
+                $customer = [
+                    'state_id' => 1,
+                    'type_document_id'  => $info->type_document,
+                    'name'              => $info->name
+                ];
+                if($c_model->save($customer)){
+                    $customer_id = $c_model->insertID();
+
+                    $data = [
+                        'name'          => $info->name,
+                        'username'      => $info->username,
+                        'email'         => $info->email,
+                        'status'        => 'inactive',
+                        'role_id'       => 3,
+                        'customer_id'   => $customer_id
+                    ];
+                    $u_model = new User();
+                    $u_model->save($data);
+                    $user_id = $u_model->insertID();
+    
+                    $p_model = new Password();
+                    $p_model->save([
+                        'user_id'   => $user_id,
+                        'password'  => password_hash($info->password, PASSWORD_DEFAULT)
+                    ]);
+        
+                    return redirect()->to(base_url(['login']));
+                }
+
+            } else {
+                $errors = implode("<br>", $validation->getErrors());
+                return $this->respond([
+                    'status'    => '403',
+                    'title'     => 'Error en los datos de creación.',
+                    'message'   => $errors
+                ]);
+            }
+        }catch(\Exception $e){
+            return $this->respond(['title' => 'Error en el servidor', 'error' => $e->getMessage()], 500);
         }
 
 
@@ -203,7 +228,7 @@ class AuthController extends BaseController
             $email = new EmailController();
             $password = $this->encript();
             $password_hash = password_hash($password, PASSWORD_DEFAULT);
-            $response = $email->send('wabox324@gmail.com', 'wabox', $request->getPost('email'), 'Recuperacion de contraseña', password($password));
+            $response = $email->send('wabox324@gmail.com', 'wabox', $info->email, 'Recuperacion de contraseña', password($password));
             if($response->status){
                 $p_model = new Password();
                 if($p_model->set(['status' => 'inactive'])->where(['user_id' => $data->id, 'status' => 'active'])->update()){
@@ -211,7 +236,8 @@ class AuthController extends BaseController
                         return $this->respond([
                             'status'    => '200',
                             'title'     => 'Contraseña actualizada con éxito',
-                            'message'   => $response->message
+                            'message'   => $response->message,
+                            'url'       => base_url(['login']),
                         ]);
                     }else
                         return $this->respond([

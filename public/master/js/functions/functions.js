@@ -1,3 +1,19 @@
+$(() => {
+  const select2 = $('.form-select');
+    
+    if (select2.length) {
+        select2.each(function () {
+            var $this = $(this);
+            const placeholder = $this.attr('placeholder') || 'Seleccione una opción';
+            select2Focus($this);
+            $this.wrap('<div class="position-relative"></div>').select2({
+                placeholder,
+                dropdownParent: $this.parent()
+            });
+        });
+    }
+})
+
 function alert(title = 'Alert', msg = 'Alert', icon = 'success', time=0, maxOpened = 5){
   var shortCutFunction = icon,
       prePositionClass = 'toast-top-right';

@@ -10,7 +10,7 @@ class User extends Model
 {
     protected $table            = 'users';
     protected $primaryKey       = 'id';
-    protected $allowedFields    = ['name', 'username', 'email', 'status', 'role_id', 'photo', 'id'];
+    protected $allowedFields    = ['customer_id', 'name', 'username', 'email', 'status', 'role_id', 'photo', 'id'];
     protected $returnType       = 'object';
 
     public function getPassword($id_user){

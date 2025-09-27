@@ -21,6 +21,11 @@
     <!-- BEGIN: VENDOR CSS-->
     <link rel="stylesheet" href="<?= base_url(["assets/vendor/fonts/remixicon/remixicon.css"]) ?>" />
     <link rel="stylesheet" href="<?= base_url(["assets/vendor/fonts/flag-icons.css"]) ?>" />
+    <link rel="stylesheet" href="<?= base_url(['assets/vendor/libs/select2/select2.css']) ?>" />
+
+    
+    <link rel="stylesheet" href="<?= base_url(['assets/vendor/libs/toastr/toastr.css']) ?>" />
+    <link rel="stylesheet" href="<?= base_url(["assets/vendor/libs/sweetalert2/sweetalert2.css"]) ?>" />
 
     <?php
       $color_primary = isset(configInfo()['primary_color']) && !empty(configInfo()['primary_color']) ? configInfo()['primary_color'] : '8e24aa';
@@ -107,26 +112,40 @@
                             <div class="form-floating form-floating-outline mb-5">
                                 <input
                                     type="text"
-                                    class="form-control"
+                                    class="form-control required"
                                     id="name"
                                     name="name"
                                     placeholder=""
                                     autofocus />
-                                <label for="name">Nombres y Apellidos</label>
+                                <label for="name">* Nombres y Apellidos</label>
                             </div>
                             <div class="form-floating form-floating-outline mb-5">
                                 <input
                                     type="text"
-                                    class="form-control"
+                                    class="form-control required"
                                     id="username"
                                     name="username"
                                     placeholder=""
                                     autofocus />
-                                <label for="username">Nombre de usuario</label>
+                                <label for="username">* Nombre de usuario</label>
                             </div>
+
+                            <div class="col-sm-12 mb-2">
+                                <div class="form-floating form-floating-outline">
+                                    <select class="form-select required" id="type_document" name="type_document">
+                                        <option value="">Seleccionar</option>
+                                        <?php foreach($type_documents as $option): ?>
+                                            <option value="<?= $option->id ?>"><?= "{$option->abbreviation} - {$option->name}" ?></option>
+                                        <?php endforeach ?>
+                                    </select>
+                                    <label for="type_document">* Tipo de documento</label>
+                                    <span class="form-floating-focused"></span>
+                                </div>
+                            </div>
+
                             <div class="form-floating form-floating-outline mb-5">
-                                <input type="text" class="form-control" id="email" name="email" placeholder="" />
-                                <label for="email">Correo electrónico</label>
+                                <input type="text" class="form-control required" id="email" name="email" placeholder="" />
+                                <label for="email">* Correo electrónico</label>
                             </div>
                             <div class="mb-5 form-password-toggle">
                                 <div class="input-group input-group-merge">
@@ -134,11 +153,11 @@
                                         <input
                                             type="password"
                                             id="password"
-                                            class="form-control"
+                                            class="form-control required"
                                             name="password"
                                             placeholder=""
                                             aria-describedby="password" />
-                                        <label for="password">Contraseña</label>
+                                        <label for="password">* Contraseña</label>
                                     </div>
                                     <span class="input-group-text cursor-pointer"><i class="ri-eye-off-line"></i></span>
                                 </div>
@@ -149,12 +168,12 @@
                                     <div class="form-floating form-floating-outline">
                                         <input
                                             type="password"
-                                            id="confirm-password"
-                                            class="form-control"
-                                            name="confirm-password"
+                                            id="password_confirm"
+                                            class="form-control required"
+                                            name="password_confirm"
                                             placeholder=""
-                                            aria-describedby="confirm-password" />
-                                        <label for="confirm-password">Confirmar Contraseña</label>
+                                            aria-describedby="password_confirm" />
+                                        <label for="password_confirm">* Confirmar Contraseña</label>
                                     </div>
                                     <span class="input-group-text cursor-pointer"><i class="ri-eye-off-line"></i></span>
                                 </div>
@@ -190,6 +209,9 @@
     <script src="<?= base_url(["assets/vendor/libs/i18n/i18n.js"]) ?>"></script>
     <script src="<?= base_url(["assets/vendor/libs/typeahead-js/typeahead.js"]) ?>"></script>
     <script src="<?= base_url(["assets/vendor/js/menu.js"]) ?>"></script>
+    <script src="<?= base_url(['assets/vendor/libs/toastr/toastr.js']) ?>"></script>
+    <script src="<?= base_url(['assets/vendor/libs/sweetalert2/sweetalert2.js']) ?>"></script>
+    <script src="<?= base_url(['assets/vendor/libs/select2/select2.js']) ?>"></script>
 
     <!-- endbuild -->
 
@@ -203,8 +225,9 @@
 
     <!-- Page JS -->
     <!-- <script src="<?= base_url(["assets/js/pages-auth.js"]) ?>"></script> -->
-    <script src="<?= base_url(["master/js/functions/functions.js"]) ?>"></script>
-    <script src="<?= base_url(["master/js/auth/register.js"]) ?>"></script>
+    <script src="<?= base_url(["master/js/functions/functions.js?v=".getCommit()]) ?>"></script>
+    <script src="<?= base_url(["master/js/functions/fetchHelper.js?v=".getCommit()]) ?>"></script>
+    <script src="<?= base_url(["master/js/auth/register.js?v=".getCommit()]) ?>"></script>
 </body>
 
 </html>
