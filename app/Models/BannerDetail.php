@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class BannerDetail extends Model
 {
-    protected $table            = 'bannerdetails';
+    protected $table            = 'banners_details';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'object';
@@ -36,7 +36,25 @@ class BannerDetail extends Model
     protected $beforeUpdate   = [];
     protected $afterUpdate    = [];
     protected $beforeFind     = [];
-    protected $afterFind      = [];
+    protected $afterFind      = ["functionAfterFind"];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
+
+    protected function functionAfterFind(array $data){
+        if(isset($data['data']->id)){
+            $data['data']->banner = $this->builder('banners')
+            ->where(['id' => $data['data']->reference])
+            ->get()->getResult()[0];
+        }else{
+            foreach($data as $banner) {
+                if(isset($banner->id)){
+                    $banner->details = $this->builder('banners_details')
+                        ->where(['reference' => $banner->id])
+                            ->orderBy('orden', 'ASC')
+                            ->get()->getResult();
+                }
+            }
+        }
+        return $data;
+    }
 }

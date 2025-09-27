@@ -8,6 +8,7 @@ use CodeIgniter\Config\Services;
 
 use App\Models\ConfigPage;
 use App\Models\Banner;
+use App\Models\BannerDetail;
 use App\Models\Menu;
 use App\Models\Plan;
 use App\Models\Product;
@@ -19,12 +20,14 @@ class HomePageController extends BaseController
     private $menu;
     private $p_model;
     private $pr_model;
+    private $bd_model;
 
     public function __construct(){
         $this->m_model = new Menu();
         $this->b_model = new Banner();
         $this->p_model = new Plan();
         $this->pr_model = new Product();
+        $this->bd_model = new BannerDetail();
 
         $request = Services::request();
         $url = (string) $request->uri->getSegment(1);
@@ -122,18 +125,49 @@ class HomePageController extends BaseController
     }
 
     public function blog(){
-        return view('home_page/stories/blog');
+        $banner = $this->b_model->where(['type' => 'banner_blog'])->first();
+        
+        $events = $this->b_model->where(['type' => 'medios'])->first();
+        return view('home_page/stories/blog', [
+            'events'    => $events,
+            'banner'    => $banner
+        ]);
     }
 
     public function blog_detail($id){
-        return view('home_page/stories/blog_detail');
+        $detail = $this->bd_model->find($id);
+        $banner = $detail->banner;
+        $banner->sub_title = $detail->title;
+        $banner->button = $detail->icon;
+        $banner->url = $detail->url;
+
+        // var_dump($detail); die;
+
+        return view('home_page/stories/blog_detail', [
+            'detail' => $detail,
+            'banner'    => $banner
+        ]);
     }
     
     public function testimonials(){
-        return view('home_page/stories/testimonials');
+        
+        $banner = $this->b_model->where(['type' => 'banner_testimony'])->first();
+        $banner->title_2 = $banner->title;
+        $banner->title = null;
+        $events = $this->b_model->where(['type' => 'medios'])->first();
+        return view('home_page/stories/testimonials', [
+            'events'    => $events,
+            'banner'    => $banner,
+        ]);
     }
 
     public function galery(){
-        return view('home_page/stories/galery');
+        
+        $banner = $this->b_model->where(['type' => 'banner_galery'])->first();
+
+        // var_dump($banner); die;
+        return view('home_page/stories/galery', [
+            'banner'    => $banner                                  
+        ]);
     }
 }

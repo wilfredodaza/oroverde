@@ -304,6 +304,7 @@ class TableController extends BaseController
                 $component = (object) ["title" => '', "description" => ""];
                 break;
 
+            
             // Table Sistemas
             case 'price_ages':
                 $this->crud->setTable('price_ages');
@@ -348,6 +349,9 @@ class TableController extends BaseController
             case 'banner_knowthebusiness':
             case 'banner_simulador':
             case 'banner_product':
+            case 'banner_blog':
+            case 'banner_testimony':
+            case 'banner_galery':
             case 'how_works':
             case 'medios':
             case 'detail_about':
@@ -382,8 +386,11 @@ class TableController extends BaseController
                         break;
                     case 'banner_about':
                     case 'banner_simulador':
+                    case 'banner_blog':
+                    case 'banner_galery':
                         $columns = ['title', 'sub_title', 'image'];
                         break;
+                    case 'banner_testimony':
                     case 'detail_about':
                         $columns = ['title', 'sub_title', 'description', 'image'];
                         break;
@@ -475,6 +482,7 @@ class TableController extends BaseController
                 switch ($banner->type) {
                     case 'banner_home':
                     case 'banner_about':
+                    case 'banner_blog':
                     case 'how_works':
                     case 'medios':
                     case 'why':
@@ -534,6 +542,81 @@ class TableController extends BaseController
                     $stateParameters->data['type'] = $type;
                     return $stateParameters;
                 });
+                break;
+            case 'banner_blog_details':
+                
+                $columns = ['title', 'sub_title', 'description', 'url', 'icon', 'file'];
+                $this->crud->displayAs([
+                    'description'   => 'Descripción',
+                    'icon'          => 'Boton',
+                    'file'          => 'Imagen',
+                ]);
+
+                $this->crud->addFields($columns);
+                $this->crud->editFields($columns);
+                $this->crud->columns($columns);
+
+                $this->crud->setTexteditor(['title', 'sub_title', 'description']);
+
+                $b_model = new Banner();
+
+                $banner = $b_model->where(['reference' => $reference])->first();
+                $this->crud->where(['reference' => $banner->id, 'type' => $table]);
+
+                $this->crud->callbackBeforeInsert(function ($stateParameters) use($banner, $table) {
+                    $stateParameters->data['reference'] = $banner->id;
+                    $stateParameters->data['type'] = $table;
+                    return $stateParameters;
+                });
+                $this->crud->setFieldUpload('file', 'master/img/pages/blogs', '/master/img/pages/blogs');
+
+                break;
+            case 'banner_galery_details':
+                $columns = ['file'];
+                $this->crud->displayAs([
+                    'file'          => 'Imagen',
+                ]);
+
+                $this->crud->addFields($columns);
+                $this->crud->editFields($columns);
+                $this->crud->columns($columns);
+
+                $b_model = new Banner();
+
+                $banner = $b_model->where(['reference' => $reference])->first();
+                $this->crud->where(['reference' => $banner->id, 'type' => $table]);
+
+                $this->crud->callbackBeforeInsert(function ($stateParameters) use($banner, $table) {
+                    $stateParameters->data['reference'] = $banner->id;
+                    $stateParameters->data['type'] = $table;
+                    return $stateParameters;
+                });
+                $this->crud->setFieldUpload('file', 'master/img/pages/galleries', '/master/img/pages/galleries');
+                break;
+            case 'banner_testimony_details':
+            
+                $columns = ['title', 'url'];
+                $this->crud->displayAs([
+                    'description'   => 'Descripción'
+                ]);
+
+                $this->crud->addFields($columns);
+                $this->crud->editFields($columns);
+                $this->crud->columns($columns);
+
+                $this->crud->setTexteditor(['title', 'sub_title', 'description']);
+
+                $b_model = new Banner();
+
+                $banner = $b_model->where(['reference' => $reference])->first();
+                $this->crud->where(['reference' => $banner->id, 'type' => $table]);
+
+                $this->crud->callbackBeforeInsert(function ($stateParameters) use($banner, $table) {
+                    $stateParameters->data['reference'] = $banner->id;
+                    $stateParameters->data['type'] = $table;
+                    return $stateParameters;
+                });
+
                 break;
             case 'plans':
                 $this->crud->displayAs([

@@ -16,10 +16,10 @@
     <div class="container-xxl">
         <div class="row justify-content-between align-items-center mt-5">
             <div class="col-lg-5 col-md-12 col-sm-12">
-                <h1 class=""><b>Historias Reales De Oro verde</b></h1>
+                <h1 class=""><b><?= $banner->title_2 ?></b></h1>
             </div>
             <div class="col-lg-7 col-md-12 col-sm-12">
-                <p>Escuche directamente a nuestros clientes sobre su experiencia invirtiendo con Oro verde y el impacto duradero del cultivo sustentable de aguacate Hass.</p>
+                <?= $banner->description ?>
             </div>
         </div>
     </div>
@@ -29,14 +29,14 @@
             <div class="card mb-6">
                 <div class="card-body mt-1">
                     <div class="row gy-6 mb-6">
-                        <?php for($i = 0; $i < 6; $i++): ?>
+                        <?php foreach($banner->details as $detail): ?>
                             <div class="col-sm-12 col-lg-6">
                                 <div class="card p-2 h-100 shadow-none border rounded-3">
                                     <div class="card h-px-350 mb-5">
                                         <div class="card-body h-100">
-                                            <div class="plyr__video-embed" id="plyr-video-player-<?= $i ?>">
+                                            <div class="plyr__video-embed" id="plyr-video-player-<?= $detail->id ?>">
                                                 <iframe
-                                                    src="https://www.youtube.com/embed/KdXF0MphU4Y"
+                                                    src="<?= $detail->url ?>"
                                                     allowfullscreen
                                                     allowtransparency
                                                     allow="autoplay"
@@ -46,50 +46,17 @@
                                     </div>
                                     <div class="card-body p-3 pt-0">
                                         <div class="d-flex justify-content-between align-items-center mb-4">
-                                            <span class="badge rounded-pill bg-label-primary"><i class="ri-calendar-line"></i> 11 de marzo de 2025</span>
-                                            <p class="d-flex align-items-center justify-content-center fw-medium gap-1 mb-0">
-                                                <span class="text-warning"><i class="ri-user-3-line span-user"></i></span><span class="fw-normal">Oro Verde</span>
-                                            </p>
+                                            <span class="badge rounded-pill bg-label-primary"><i class="ri-calendar-line"></i> <?= formatDate(date("Y-m-d", strtotime($detail->created_at))) ?></span>
+                                            
                                         </div>
-                                        <h5 class="card-title">Saberes y prácticas que posibilitan el desarrollo sostenible del Aguacate Hass</h5>
+                                        <h5 class="card-title"><?= $detail->title ?></h5>
                                         <!-- <p class="mt-1">Cada momento en Avovite es una nueva aventura y a través de los rostros que frecuentamos adquirimos nuevos...</p> -->
                                         
                                     </div>
                                 </div>
                             </div>
-                        <?php endfor ?>
+                        <?php endforeach ?>
                     </div>
-                    <nav aria-label="Page navigation" class="d-flex align-items-center justify-content-center">
-                        <ul class="pagination mb-0">
-                        <li class="page-item first">
-                            <a class="page-link waves-effect" href="javascript:void(0);"><i class="tf-icon ri-skip-back-mini-line ri-22px"></i></a>
-                        </li>
-                        <li class="page-item prev">
-                            <a class="page-link waves-effect" href="javascript:void(0);"><i class="tf-icon ri-arrow-left-s-line ri-22px"></i></a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link waves-effect" href="javascript:void(0);">1</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link waves-effect" href="javascript:void(0);">2</a>
-                        </li>
-                        <li class="page-item active">
-                            <a class="page-link waves-effect" href="javascript:void(0);">3</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link waves-effect" href="javascript:void(0);">4</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link waves-effect" href="javascript:void(0);">5</a>
-                        </li>
-                        <li class="page-item next">
-                            <a class="page-link waves-effect" href="javascript:void(0);"><i class="tf-icon ri-arrow-right-s-line ri-22px"></i></a>
-                        </li>
-                        <li class="page-item last">
-                            <a class="page-link waves-effect" href="javascript:void(0);"><i class="tf-icon ri-skip-forward-mini-line ri-22px"></i></a>
-                        </li>
-                        </ul>
-                    </nav>
                 </div>
             </div>
         </div>

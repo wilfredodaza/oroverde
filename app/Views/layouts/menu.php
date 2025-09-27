@@ -20,13 +20,15 @@
     <div class="menu-inner-shadow"></div>
 
     <ul class="menu-inner py-1">
-        <?php foreach($type_menus as $key => $type_menu): ?>
+        <?php foreach($type_menus as $key_type => $type_menu): ?>
             <!-- Apps & Pages -->
-            <li class="menu-header mt-5">
-                <span class="menu-header-text" data-i18n="Menú - <?= $type_menu ?>">Menú - <?= $type_menu ?></span>
-            </li>
             <?php $menus = menus($type_menu); ?>
-            <?php if($key == 0): ?>
+            <?php if(count($menus) > 0): ?>
+                <li class="menu-header mt-5">
+                    <span class="menu-header-text" data-i18n="Menú - <?= $type_menu ?>">Menú - <?= $type_menu ?></span>
+                </li>
+            <?php endif ?>
+            <?php if($key_type == 0): ?>
                 <li class="menu-item <?= isActive(base_url(['dashboard'])) ?>">
                     <a href="<?= base_url(['dashboard']) ?>" class="menu-link">
                         <i class="menu-icon tf-icons ri-home-4-fill"></i>
@@ -68,7 +70,8 @@
                     </li>
                 <?php endif ?>
             <?php endforeach ?>
-            <?php if($key == 0): ?>
+
+            <?php if($key_type == 0): ?>
                 <li class="menu-item <?= isActive(base_url(['password'])) ?>">
                     <a href="<?= base_url(['password']) ?>" class="menu-link">
                         <i class="menu-icon tf-icons ri-lock-password-line"></i>

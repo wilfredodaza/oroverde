@@ -92,3 +92,52 @@ function getIconFile($nombreArchivo) {
 
     return $iconos[$extension] ?? $iconos['default'];
 }
+
+function truncateHtml($html, $longitud = 50, $final = '...') {
+    $printedLength = 0;
+    $position = 0;
+    $tags = [];
+    $result = '';
+
+    // Expresión regular para separar etiquetas y texto
+    $re = '/(<\/?[\w\s="\'-:;#]+>|[^<>]+)/';
+
+    preg_match_all($re, $html, $tokens, PREG_SET_ORDER);
+
+    foreach ($tokens as $token) {
+        if ($printedLength >= $longitud) {
+            break;
+        }
+
+        if ($token[0][0] === '<') {
+            // Si es una etiqueta HTML
+            if ($token[0][1] === '/') {
+                // Etiqueta de cierre
+                array_pop($tags);
+                $result .= $token[0];
+            } else {
+                // Etiqueta de apertura
+                preg_match('/<([\w]+)/', $token[0], $tagName);
+                $tags[] = $tagName[1];
+                $result .= $token[0];
+            }
+        } else {
+            // Es texto
+            $texto = $token[0];
+            $remaining = $longitud - $printedLength;
+            $result .= mb_substr($texto, 0, $remaining);
+            $printedLength += mb_strlen($texto);
+
+            if ($printedLength >= $longitud) {
+                $result .= $final;
+            }
+        }
+    }
+
+    // Cerrar etiquetas abiertas
+    while (!empty($tags)) {
+        $result .= "</" . array_pop($tags) . ">";
+    }
+
+    return $result;
+}

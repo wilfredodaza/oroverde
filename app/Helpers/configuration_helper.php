@@ -100,3 +100,7 @@ function formatNumber($val) {
     }
     return number_format($val); // 👈 formato normal con separadores de miles
 }
+
+function esUrlValida($cadena) {
+    return filter_var($cadena, FILTER_VALIDATE_URL) !== false;
+}

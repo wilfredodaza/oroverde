@@ -12,3 +12,8 @@
 .img-blog{
     max-height: 150px;
 }
+
+.blog p>img{
+    width: 100%;
+    border-radius: 50px;
+}

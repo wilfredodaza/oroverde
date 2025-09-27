@@ -22,24 +22,10 @@
                                 <a href="<?= base_url(['blog']) ?>"><i class="ri-arrow-go-back-line"></i></a>
                             </div>
                         </div>
-                        <div class="card academy-content shadow-none border">
+                        <div class="card academy-content shadow-none border blog">
                             <div class="card-body pt-3">
-                                <h5>Description</h5>
-                                    <p class="mb-6">
-                                    The material of this course is also covered in my other course about web design and
-                                    development with HTML5 &amp; CSS3. Scroll to the bottom of this page to check out that course,
-                                    too! If you're already taking my other course, you already have all it takes to start
-                                    designing beautiful websites today!
-                                    </p>
-                                    <p class="mb-6">
-                                    "Best web design course: If you're interested in web design, but want more than just a "how
-                                    to use WordPress" course,I highly recommend this one." — Florian Giusti
-                                    </p>
-                                    <p>
-                                    "Very helpful to us left-brained people: I am familiar with HTML, CSS, JQuery, and Twitter
-                                    Bootstrap, but I needed instruction in web design. This course gave me practical, impactful
-                                    techniques for making websites more beautiful and engaging." — Susan Darlene Cain
-                                    </p>
+                                <?= !empty($detail->sub_title) ? "<h5>$detail->sub_title</h5>" : "" ?>
+                                <?= $detail->description ?>
                                 <hr class="my-6">
                                 <h5>Autor</h5>
                                 <div class="d-flex justify-content-start align-items-center user-name">

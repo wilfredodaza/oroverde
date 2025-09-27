@@ -31,15 +31,23 @@
                     <div class="tab-content">
                         <?php foreach(meses() as $key => $mes): ?>
                             <div class="tab-pane fade <?= $key == 0 ? "show active" : "" ?>" id="nav-mes-<?= $mes->mes ?>" role="tabpanel">
-                                <div class="row g-6" data-masonry='{"percentPosition": true }'>
-                                    <?php for($i = 0; $i < 11; $i++): ?>
-                                        
-                                        <div class="col-sm-6 col-lg-4">
-                                            <div class="card">
-                                                <img class="card-img <?= rand(0, 1) > 0.5 ? "w-px-500" : "" ?>" src="../../assets/img/elements/4.jpg" alt="Card image cap" />
-                                            </div>
-                                        </div>
-                                    <?php endfor ?>
+                                <div class="row g-6">
+                                    <?php
+                                        $imagenesMes = getImagesByMonth($banner->details, $mes->mes);
+
+                                        if (!empty($imagenesMes)):
+                                            foreach (array_chunk($imagenesMes, 3) as $grupo): ?>
+                                                <?php foreach($grupo as $img): ?>
+                                                    <div class="col-sm-6 col-lg-4">
+                                                        <div class="card">
+                                                            <img class="card-img w-100" src="<?= base_url(['master/img/pages/galleries', $img->file]) ?>" alt="Card image cap" />
+                                                        </div>
+                                                    </div>
+                                                <?php endforeach ?>
+                                            <?php endforeach ?>
+                                        <?php else: ?>
+                                            <p class="text-muted align-center" >No hay imágenes para este mes.</p>
+                                        <?php endif; ?>
                                 </div>
                             </div>
                         <?php endforeach ?>
