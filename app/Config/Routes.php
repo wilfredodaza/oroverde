@@ -20,7 +20,7 @@ $routes->setDefaultNamespace('App\Controllers');
 $routes->setDefaultController('HomeController');
 $routes->setDefaultMethod('home');
 $routes->setTranslateURIDashes(false);
-$routes->set404Override();
+$routes->set404Override('App\Controllers\Errors::error404');
 $routes->setAutoRoute(true);
 
 /**

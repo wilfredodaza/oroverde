@@ -28,6 +28,24 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&ampdisplay=swap"
       rel="stylesheet" />
 
+    <?php
+      $color_primary = isset(configInfo()['primary_color']) && !empty(configInfo()['primary_color']) ? configInfo()['primary_color'] : '8e24aa';
+      $secondary_color = isset(configInfo()['secundary_color']) && !empty(configInfo()['secundary_color']) ? configInfo()['secundary_color'] : 'ff6e40';
+    ?>
+
+    <style>
+      :root {
+        --primary-color: #<?= $color_primary ?>;
+        --secondary-color: #<?= $secondary_color ?>;
+        --primary-rgb: <?= hexToRgb($color_primary)?>;
+        --secondary-rgb: <?= hexToRgb($secondary_color) ?>;
+        --primary-ligth: <?= lightenColor($color_primary, 90) ?>;
+        --primary-ligth-2: <?= lightenColor($color_primary, 80) ?>;
+        --primary-ligth-3: <?= lightenColor($color_primary, 70) ?>;
+        --primary-darken: <?= darkenColor($color_primary, 30) ?>;
+      }   
+    </style>
+
     <!-- Icons -->
     <link rel="stylesheet" href="<?= base_url(['assets/vendor/fonts/remixicon/remixicon.css']) ?>" />
     <link rel="stylesheet" href="<?= base_url(['assets/vendor/fonts/flag-icons.css']) ?>" />
@@ -73,7 +91,7 @@
           width="160" />
         <div class="d-flex flex-column align-items-center">
           <div>
-            <a href="<?= base_url() ?>" class="btn btn-primary text-center my-10">Volver al inicio</a>
+            <a href="<?= base_url(['dashboard']) ?>" class="btn btn-primary text-center my-10">Volver al inicio</a>
           </div>
         </div>
       </div>

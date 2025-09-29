@@ -215,7 +215,7 @@ class AuthController extends BaseController
 
     public function resetPassword()
     {
-        return view('auth\reset_password');
+        return view('auth/reset_password');
     }
 
     public function forgotPassword()
