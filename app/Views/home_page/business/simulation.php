@@ -43,6 +43,12 @@
                         <!-- <small class="text-light fw-medium">Cantidad de Vites</small> -->
                         <div id="slider-product" class="my-6"></div>
                     </div>
+                    
+                    <h5 class="card-header">Precio por edad | <?= $product->unit_age_name ?></h5>
+                    <div class="card-body">
+                        <!-- <small class="text-light fw-medium">Cantidad de Vites</small> -->
+                        <div id="slider-product-price" class="my-6"></div>
+                    </div>
                 </div>
             </div>
 
@@ -59,6 +65,7 @@
 
             <input type="hidden" id="discount_simulate" value="<?= $product->plans[0]->discount ?>">
             <input type="hidden" id="quantity_simulate" value="<?= $product->plans[0]->stock ?>">
+            <input type="hidden" id="price_age_simulate" value="<?= $product->price_ages[0]->age ?>">
             <input type="hidden" id="value_vite" value="<?= number_format($product->price, 0, ",", ".") ?>">
 
             <!-- <div class="col-md">

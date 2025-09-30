@@ -4,6 +4,9 @@ function calculate_data(){
     const quantity = parseInt($("#quantity_simulate").val());
     const discount = parseInt($("#discount_simulate").val());
     const value_vite = format_number($('#value_vite').val());
+    console.log(value_vite);
+    // const product_age = parseInt($('#price_age_simulate').val());
+
     const data = product.harvests;
     
     let value_individual = product.individual_value;
@@ -156,6 +159,7 @@ function obtenerDescuentoPorCantidad(quantity) {
 function loadSlider(){
     const sliderDiscount = document.getElementById('slider-discount');
     const sliderProduct = document.getElementById('slider-product');
+    const sliderProductPrice = document.getElementById('slider-product-price');
 
     const min_discount = Math.min(...product.plans.map(p => p.discount));
     const max_discount = Math.max(...product.plans.map(p => p.discount));
@@ -204,6 +208,41 @@ function loadSlider(){
             if (sliderDiscount && sliderDiscount.noUiSlider) {
                 sliderDiscount.noUiSlider.set(discount);
             }
+        
+            calculate_data();
+        });
+    }
+    
+    console.log(product.price_ages)
+    
+    const max_product = Math.max(...product.price_ages.map(p => parseInt(p.age)));
+
+    if(sliderProductPrice){
+        noUiSlider.create(sliderProductPrice, {
+            start: [0],
+            behaviour: 'hover-snap-tap',
+            tooltips: true,
+            step: 1,
+            connect: [true, false],
+            direction: isRtl ? 'rtl' : 'ltr',
+            range: {  
+                min: 0,
+                max: max_product
+            }
+        });
+
+        sliderProductPrice.noUiSlider.on('update', function (values, handle) {
+            const quantity = parseInt(values[handle]);
+
+            product.price_ages.map(p => {
+                if(quantity >= parseInt(p.age)){
+                    $('#value_vite').val(parseInt(p.value));
+                    return false;
+                }
+                return true;
+            })
+
+            $('#price_age_simulate').val(quantity);
         
             calculate_data();
         });

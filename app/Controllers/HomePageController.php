@@ -114,7 +114,15 @@ class HomePageController extends BaseController
     
     public function knowthebusiness_simulation(){
         $banner  = $this->b_model->where(['type' => 'banner_simulador'])->first();
-        $product = $this->pr_model->where(['status' => 'active'])->first();
+        $product = $this->pr_model
+            ->select([
+                'products.*',
+                'ua.name as unit_age_name'
+            ])
+            ->join('unit_ages as ua', 'ua.id = products.unit_age_id', 'left')
+            ->where(['status' => 'active'])
+        ->first();
+
 
         // var_dump($product); die;
 

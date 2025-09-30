@@ -41,15 +41,20 @@ class Product extends Model
     protected $afterDelete    = [];
 
     protected function functionAfterFind(array $data){
-        if(isset($data['id'])){
+        if(isset($data['data']->id)){
             $data['data']->plans = $this->builder('plans')
-                ->where(['product_id' => $data['id']])
+                ->where(['product_id' => $data['data']->id])
                 ->orderBy('position', 'ASC')
                 ->get()->getResult();
 
             $data['data']->harvests = $this->builder('harvests')
-                ->where(['product_id' => $data['id']])
+                ->where(['product_id' => $data['data']->id])
                 ->orderBy('position', 'ASC')
+                ->get()->getResult();
+
+            $data['data']->price_ages = $this->builder('price_ages')
+                ->where(['product_id' => $data['data']->id])
+                ->orderBy('id', 'ASC')
                 ->get()->getResult();
         }else{
             foreach($data as $banner) {

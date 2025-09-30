@@ -12,6 +12,7 @@ use App\Models\ConfigPage;
 use App\Models\Banner;
 use App\Models\UnitProductive;
 use App\Models\PriceAge;
+use App\Models\Product;
 use App\Models\Password;
 
 class TableController extends BaseController
@@ -85,6 +86,7 @@ class TableController extends BaseController
                     break;
                 case 'products':
                     $this->crud->displayAs([
+                        'unit_age_id'       => 'Tiempo Medida',
                         'name'              => 'Nombre',
                         'description'       => 'Descripción',
                         'price'             => 'Precio',
@@ -96,7 +98,7 @@ class TableController extends BaseController
                     ]);
                     $this->crud->unsetDelete();
                     $columns = [
-                        'name', 'description', 'price', 'stock','sales_percentage',
+                        'unit_age_id', 'name', 'description', 'price', 'stock','sales_percentage',
                         'individual_value', 'ipc', 'status'];
                     $this->crud->columns($columns);
                     $this->crud->editFields($columns);
@@ -120,6 +122,11 @@ class TableController extends BaseController
                         return base_url(['table', 'harvests', $row->id]);
                     }, false);
 
+                    
+                    $this->crud->setActionButton('Valores Edad', 'fa fa-money', function ($row) {
+                        return base_url(['table', 'price_ages_p', $row->id]);
+                    }, false);
+
                     $this->crud->callbackColumn('price', function($value, $row){
                         return "$" . number_format($value, 0, ".", ",");
                     });
@@ -135,6 +142,9 @@ class TableController extends BaseController
                     $this->crud->callbackColumn('ipc', function($value, $row){
                         return "$value %";
                     });
+
+                    
+                    $this->crud->setRelation('unit_age_id', 'unit_ages', '{name}');
 
                     break;
                 default:
@@ -299,6 +309,10 @@ class TableController extends BaseController
                 $this->crud->setTable('plans');
                 $component = (object) ["title" => '', "description" => ""];
                 break;
+            case 'price_ages_p':
+                $this->crud->setTable('price_ages');
+                $component = (object) ["title" => '', "description" => ""];
+                break;
             case 'harvests':
                 $this->crud->setTable('harvests');
                 $component = (object) ["title" => '', "description" => ""];
@@ -318,6 +332,18 @@ class TableController extends BaseController
                     ->find($reference);
                 $component = (object) ["title" => "{$unit_productive->name} - {$unit_productive->unit_age_name}", "description" => ""];
                 break;
+            case 'price_ages_p':
+                $p_model = new Product();
+                $product = $p_model
+                    ->select([
+                        'products.*',
+                        'ua.name as unit_age_name'
+                    ])
+                    ->join('unit_ages as ua', 'ua.id = products.unit_age_id', 'left')
+                    ->find($reference);
+                $component = (object) ["title" => "{$product->name} - {$product->unit_age_name}", "description" => ""];
+                break;
+                
 
             case 'beneficiaries':
                 $this->crud->setTable('beneficiaries');
@@ -666,6 +692,38 @@ class TableController extends BaseController
 
                 $this->crud->requiredFields(['year', 'production', 'position']);
                 break;
+            case 'price_ages_p':
+                $this->crud->displayAs([
+                    'age'           => 'Edad',
+                    'value'         => 'Valor',
+                    'created_at'    => 'Creado'
+                ]);
+
+                $this->crud->where(['product_id' => $reference]);
+
+                $columns = ['age', 'value', 'created_at'];
+                $this->crud->columns($columns);
+                if (($key = array_search('created_at', $columns)) !== false) {
+                    unset($columns[$key]);
+                }
+                $this->crud->addFields($columns);
+                $this->crud->editFields($columns);
+
+                $this->crud->callbackColumn('value', function($value, $row){
+                    return "$ " . number_format($value, 2, ".", ",");
+                });
+
+                $this->crud->callbackBeforeInsert(function ($stateParameters) use ($reference) {
+                    $stateParameters->data['created_at'] = date('Y-m-d h:i:s');
+                    $stateParameters->data['updated_at'] = date('Y-m-d h:i:s');
+                    $stateParameters->data['product_id'] = $reference;
+                    return $stateParameters;
+                });
+                $this->crud->callbackBeforeUpdate(function ($stateParameters) {
+                    $stateParameters->data['updated_at'] = date('Y-m-d h:i:s');
+                    return $stateParameters;
+                });
+                    break;
 
             // Table config sistem
 
