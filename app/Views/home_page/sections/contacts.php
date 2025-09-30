@@ -23,7 +23,7 @@
                                             <div class="card-body">
                                                 <h5 class="card-title">Contáctanos</h5>
                                                 <p class="card-text">Lun-Vie de 9 a.m. a 7 p.m.</p>
-                                                <a href="javascript:void(0)" class="btn btn-primary waves-effect waves-light">Go somewhere</a>
+                                                <!-- <a href="javascript:void(0)" class="btn btn-primary waves-effect waves-light">Go somewhere</a> -->
                                             </div>
                                         </div>
                                     </div>

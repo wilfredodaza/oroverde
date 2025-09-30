@@ -33,11 +33,7 @@
                 </div> -->
                 
                 <div class="card mb-3 h-100">
-                    <h5 class="card-header">Descuento</h5>
-                    <div class="card-body">
-                        <!-- <small class="text-light fw-medium">Descuento</small> -->
-                        <div id="slider-discount" class="my-6"></div>
-                    </div>
+                    
                     <h5 class="card-header">Cantidad de Vites</h5>
                     <div class="card-body">
                         <!-- <small class="text-light fw-medium">Cantidad de Vites</small> -->
@@ -49,12 +45,18 @@
                         <!-- <small class="text-light fw-medium">Cantidad de Vites</small> -->
                         <div id="slider-product-price" class="my-6"></div>
                     </div>
+                    
+                    <h5 class="card-header">Descuento</h5>
+                    <div class="card-body">
+                        <!-- <small class="text-light fw-medium">Descuento</small> -->
+                        <div id="slider-discount" class="my-6"></div>
+                    </div>
                 </div>
             </div>
 
             <div class="col-md">
                 <div class="card h-100">
-                    <div class="card-body">
+                    <div class="card-body d-flex justify-content-center align-items-center">
                         <div class="table-responsive text-wrap">
                             <table class="table table-sm centered" id="table-info">
                             </table>

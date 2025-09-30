@@ -10,6 +10,7 @@ class Products extends Migration
     {
         $this->forge->addField([
             'id'                => ['type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE, 'auto_increment'  => TRUE],
+            'unit_age_id'   => ['type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE, 'null' => FALSE],
             'name'              => ['type' => 'VARCHAR', 'constraint' => 255],
             'description'       => ['type' => 'TEXT', 'null' => TRUE],
             'price'             => ['type' => 'FLOAT', 'null' => TRUE],
@@ -23,6 +24,7 @@ class Products extends Migration
             'deleted_at'        => ['type' => 'DATETIME', 'null' => TRUE],
         ]);
         $this->forge->addKey('id', TRUE);
+        $this->forge->addForeignKey('unit_age_id', 'unit_ages', 'id');
         $this->forge->createTable('products');
     }
 

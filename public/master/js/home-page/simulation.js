@@ -234,13 +234,11 @@ function loadSlider(){
         sliderProductPrice.noUiSlider.on('update', function (values, handle) {
             const quantity = parseInt(values[handle]);
 
-            product.price_ages.map(p => {
-                if(quantity >= parseInt(p.age)){
-                    $('#value_vite').val(parseInt(p.value));
-                    return false;
-                }
-                return true;
-            })
+            const found = product.price_ages.find(p => quantity >= parseInt(p.age));
+
+            if (found) {
+                $('#value_vite').val(parseInt(found.value));
+            }
 
             $('#price_age_simulate').val(quantity);
         

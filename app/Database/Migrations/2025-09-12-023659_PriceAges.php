@@ -10,7 +10,8 @@ class PriceAges extends Migration
     {
         $this->forge->addField([
             'id'                    => ['type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE, 'auto_increment'  => TRUE],
-            'unit_productive_id'    => ['type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE, 'null' => FALSE],
+            'unit_productive_id'    => ['type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE, 'null' => TRUE],
+            'product_id'    => ['type' => 'INT', 'constraint' => 11, 'unsigned' => TRUE, 'null' => TRUE],
             'age'                   => ['type' => 'INT', 'constraint' => 11, 'null' => TRUE],
             'value'                 => ['type' => 'DECIMAL(20, 2)', 'null' => TRUE],
 
@@ -20,6 +21,7 @@ class PriceAges extends Migration
         ]);
         $this->forge->addKey('id', TRUE);
         $this->forge->addForeignKey('unit_productive_id', 'unit_productives', 'id');
+        $this->forge->addForeignKey('product_id', 'products', 'id');
         $this->forge->createTable('price_ages');
     }
 
