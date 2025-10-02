@@ -213,8 +213,6 @@ function loadSlider(){
         });
     }
     
-    console.log(product.price_ages)
-    
     const max_product = Math.max(...product.price_ages.map(p => parseInt(p.age)));
 
     if(sliderProductPrice){
@@ -234,7 +232,13 @@ function loadSlider(){
         sliderProductPrice.noUiSlider.on('update', function (values, handle) {
             const quantity = parseInt(values[handle]);
 
-            const found = product.price_ages.find(p => quantity >= parseInt(p.age));
+            const found = product.price_ages.reduce((acc, p) => {
+                const age = parseInt(p.age, 10);
+                if (quantity >= age && (!acc || age > parseInt(acc.age, 10))) {
+                    return p;
+                }
+                return acc;
+            }, null);
 
             if (found) {
                 $('#value_vite').val(parseInt(found.value));

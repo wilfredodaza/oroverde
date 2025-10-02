@@ -15,15 +15,15 @@
 
     <?php foreach ($details as $key => $detail): ?>
         <div class="container-xxl flex-grow-1 container-p-y bg-body <?= $key == 0 ? "mt-10" : "" ?> <?= $key == (count($details) - 1) ? "mb-10" : "" ?>">
-            <div class="row g-6 px-10">
-                <div class="col-md px-10">
+            <div class="row g-6 px-8">
+                <div class="col-md px-1">
                     <div class="card">
                         <div class="row g-0 align-items-center <?= ($key % 2) !== 0 ? "flex-direction-row-reverse" : "" ?>">
                             <div class="col-md-4">
                                 <img class="card-img card-img-<?= ($key % 2) === 0 ? "left" : "right" ?>" src="<?= $detail->image ? base_url(['master/img/pages/home', $detail->image]) : base_url(['assets/img/elements/17.jpg']) ?>" alt="Card image">
                             </div>
-                            <div class="col-md-8 px-10">
-                                <div class="card-body px-10">
+                            <div class="col-md-8 px-2">
+                                <div class="card-body px-5">
                                     <h5 class="text-primary"><?= $detail->sub_title ? $detail->sub_title : "Sobre Nosotros" ?></h5>
                                     <h2 class="card-title"><?= $detail->title ?></h2>
                                     <?= $detail->description ?>
