@@ -19,7 +19,7 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-end align-items-center flex-wrap mb-6 gap-1">
                             <div class="d-flex align-items-center justify-content-end">
-                                <a href="<?= base_url(['blog']) ?>"><i class="ri-arrow-go-back-line"></i></a>
+                                <a href="<?= base_url(['blog']) ?>" class="btn btn-primary"><i class="ri-arrow-go-back-line"></i></a>
                             </div>
                         </div>
                         <div class="card academy-content shadow-none border blog">
@@ -29,14 +29,11 @@
                                 <hr class="my-6">
                                 <h5>Autor</h5>
                                 <div class="d-flex justify-content-start align-items-center user-name">
-                                    <div class="avatar-wrapper">
-                                        <div class="avatar me-4">
-                                            <img src="../../assets/img/avatars/1.png" alt="Avatar" class="rounded-circle">
-                                        </div>
-                                    </div>
                                     <div class="d-flex flex-column">
-                                        <h6 class="mb-1">William Bonilla</h6>
-                                        <small>Desarrollador</small>
+                                        <h6 class="mb-1"><?= $detail->ref_name ?> - <?= formatDate(date("Y-m-d", strtotime($detail->created_at))) ?></h6>
+                                        <?php if($detail->ref_url): ?>
+                                            <small><a href="<?= esUrlValida($detail->ref_url) ? $detail->ref_url : base_url([$detail->ref_url]) ?>"><?= $detail->ref_link ? $detail->ref_link : "Saber más" ?></a></small>
+                                        <?php endif ?>
                                     </div>
                                 </div>
                             </div>

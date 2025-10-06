@@ -21,7 +21,7 @@
                 <div class="col-lg-7 col-md-12 col-sm-12 mt-10">
                     <h1 class="display-1 text-white"><?= $banner->title ? $banner->title : 'Los frutos del aguacate HASS Colombiano son para todos "Cultivamos y vendemos por ti"' ?></h1>
                     <div>
-                        <a href="#landingPricing" class="btn text-primary btn-lg btn-secondary p-3 me-10 btn-home-1">Empezar</a>
+                        <!-- <a href="#landingPricing" class="btn text-primary btn-lg btn-secondary p-3 me-10 btn-home-1">Empezar</a> -->
                         <?php foreach ($banner->details as $key => $detail): ?>
                             <?php if($detail->type == "enlaces"): ?>
                                 <a href="<?= strpos($detail->url, 'http') !== false ? $detail->url : base_url([$detail->url]) ?>" class="btn text-primary btn-lg btn-secondary p-3 me-10 btn-home-1"><?= $detail->title ?></a>
@@ -54,40 +54,7 @@
     </section>
     <!-- Hero: End -->
 
-    <?php
-
-        $planes = [
-            (object)[
-                'name'      => "3 Vites",
-                'quantity'  => 3,
-                'price'     => 500000,00,
-                'discount'  => 0,
-            ],
-            (object)[
-                'name'      => "10 Vites",
-                'quantity'  => 10,
-                'price'     => 500000,00,
-                'discount'  => 5,
-            ],
-            (object)[
-                'name'      => "20 Vites",
-                'quantity'  => 20,
-                'price'     => 500000,00,
-                'discount'  => 10,
-            ],
-            (object)[
-                'name'      => "30 Vites",
-                'quantity'  => 30,
-                'price'     => 500000,00,
-                'discount'  => 15,
-            ]
-        ];
-
-    ?>
-
-    <?= view('home_page/sections/products', [
-        'planes'    => $planes
-    ]) ?>
+    <?= view('home_page/sections/products') ?>
 
 
     
@@ -114,8 +81,8 @@
                                         alt="human image" />
                                     </div>
                                     <div class="card-body text-center">
-                                        <h3 class="card-title mb-1 text-primary">Paso <?= $key + 1 ?></h3>
-                                        <h5 class="card-text mb-3"><b><?= $detail->title ?></b></h5>
+                                        <h3 class="card-title mb-1 text-primary"><?= $detail->title ?></h3>
+                                        <h5 class="card-text mb-3"><b><?= $detail->sub_title ?></b></h5>
                                         <?= $detail->description ?>
                                     </div>
                                 </div>
@@ -151,5 +118,5 @@
     <script async defer
         src="https://maps.googleapis.com/maps/api/js?key=<?= env('key.google_maps', strtotime(date('Y-m-d H:i:s'))) ?>">
     </script>
-    <script src="<?= base_url(["master/js/home-page/index.js"]) ?>"></script>
+    <script src="<?= base_url(["master/js/home-page/index.js?v=".getCommit()]) ?>"></script>
 <?= $this->endSection() ?>

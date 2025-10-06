@@ -41,16 +41,16 @@ class Banner extends Model
     protected $afterDelete    = [];
 
     protected function functionAfterFind(array $data){
-        if(isset($data['id'])){
+        if(isset($data['data']->id)){
             $data['data']->details = $this->builder('banners_details')
-            ->where(['reference' => $data['id']])
+            ->where(['reference' => $data['data']->id, 'status' => 'Activo'])
             ->orderBy('orden', 'ASC')
             ->get()->getResult();
         }else{
             foreach($data as $banner) {
                 if(isset($banner->id)){
                     $banner->details = $this->builder('banners_details')
-                        ->where(['reference' => $banner->id])
+                        ->where(['reference' => $banner->id, 'status' => 'Activo'])
                             ->orderBy('orden', 'ASC')
                             ->get()->getResult();
                 }

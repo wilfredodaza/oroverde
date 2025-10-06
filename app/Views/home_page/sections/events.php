@@ -1,5 +1,5 @@
 <!-- Useful features: Start -->
-<section id="landingFeatures" class="section-py landing-features pt-10 bg-body">
+<!-- <section id="landingFeatures" class="section-py landing-features pt-10 bg-body">
     <div class="container">
         <h5 class="text-center mb-2">
             <span class="display-3 fw-bold text-primary"><?= $events->title ? $events->title : "Oro Verde en medios" ?></span>
@@ -16,5 +16,5 @@
             <?php endforeach ?>
         </div>
     </div>
-</section>
+</section> -->
 <!-- Useful features: End -->

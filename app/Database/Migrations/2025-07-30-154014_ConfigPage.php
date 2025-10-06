@@ -13,7 +13,10 @@ class ConfigPage extends Migration
             'meta_description'          => ['type' => 'TEXT', 'null' => TRUE],
             'meta_keywords'             => ['type' => 'TEXT', 'null' => TRUE],
             'favicon'                   => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => TRUE],
+            'menu'                      => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => TRUE],
+            'logo'                      => ['type' => 'VARCHAR', 'constraint' => 255, 'null' => TRUE],
             'name_app'                  => ['type' => 'VARCHAR', 'constraint' => 45],
+            'title_logo'                => ['type' => 'VARCHAR', 'constraint' => 45],
         ]);
         $this->forge->addKey('id', TRUE);
 		$this->forge->createTable('config_page');

@@ -67,3 +67,22 @@ b, strong{
     width: 100%;
     height: calc(100vh - 210px);
 }
+
+.navbar-brand, .app-brand-link{
+    height: 100px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin: 0px !important;
+}
+
+.navbar-brand h2, .app-brand-link h2{
+    height: 100% !important;
+    line-height: 1;
+    font-size: 20px !important;
+    
+    letter-spacing: .5px;
+    margin-bottom: 0px;
+    font-weight: 900;
+}

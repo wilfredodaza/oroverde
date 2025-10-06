@@ -75,7 +75,8 @@ class TableController extends BaseController
                     $this->crud->displayAs([
                         'meta_description'  => 'Descripción',
                         'meta_keywords'     => 'Palabras claves',
-                        'name_app'          => 'Titulo'
+                        'name_app'          => 'Titulo',
+                        'title_logo'        => 'Titulo logo'
                     ]);
                     $c_model = new ConfigPage();
                     $config = $c_model->countAllResults();
@@ -83,6 +84,11 @@ class TableController extends BaseController
                         $this->crud->unsetAdd();
                         $this->crud->unsetDelete();
                     }
+                    
+                    $this->crud->setFieldUpload('favicon', 'master/img/logos', '/master/img/logos');
+                    $this->crud->setFieldUpload('menu', 'master/img/logos', '/master/img/logos');
+                    $this->crud->setFieldUpload('logo', 'master/img/logos', '/master/img/logos');
+
                     break;
                 case 'products':
                     $this->crud->displayAs([
@@ -307,7 +313,7 @@ class TableController extends BaseController
                 break;
             case 'plans':
                 $this->crud->setTable('plans');
-                $component = (object) ["title" => '', "description" => ""];
+                $component = (object) ["title" => 'Planes de producto', "description" => ""];
                 break;
             case 'price_ages_p':
                 $this->crud->setTable('price_ages');
@@ -378,6 +384,8 @@ class TableController extends BaseController
             case 'banner_blog':
             case 'banner_testimony':
             case 'banner_galery':
+            case 'banner_contact':
+            case 'banner_footer':
             case 'how_works':
             case 'medios':
             case 'detail_about':
@@ -436,6 +444,7 @@ class TableController extends BaseController
                         $columns = ['title', 'sub_title', 'image'];
                         break;
                     case 'banner_product':
+                    case 'banner_contact':
                         $columns = ['title', 'sub_title', 'description'];
                         break;
                     case 'knowthebusiness_details':
@@ -456,6 +465,12 @@ class TableController extends BaseController
                             return base_url(['table',"preguntas", $row->id]);
                         });
                         break;
+                    case 'banner_footer':
+                        $columns = ['title', 'image'];
+                        $this->crud->setActionButton('Enlaces', 'fa fa-link', function ($row) use($table) {
+                            return base_url(['table',"enlaces", $row->id]);
+                        });
+                        break;
                     default:
                         $columns = ['title', 'sub_title', 'image'];
                         $this->crud->setActionButton('Pasos', 'fa fa-list-ul', function ($row) use($table) {
@@ -466,13 +481,10 @@ class TableController extends BaseController
                         });
                         break;
                 }
-                $this->crud->setTexteditor(['title', 'sub_title', 'description']);
-                $this->crud->columns($columns);
-                $this->crud->editFields($columns);
-                $this->crud->addFields($columns);
 
                 switch($table){
                     case 'knowthebusiness_details':
+                        $this->crud->setFieldUpload('image', 'master/img/pages/details', '/master/img/pages/details');
                         break;
                     case 'knowthebusiness_video':
                         if($banner_total > 0){
@@ -483,6 +495,17 @@ class TableController extends BaseController
                             'title'     => 'Titulo',
                             'sub_title' => 'Sub Titulo',
                             'image'     => 'url'
+                        ]);
+                        break;
+                    case 'banner_contact':
+                        if($banner_total > 0){
+                            $this->crud->unsetAdd();
+                            $this->crud->unsetDelete();
+                        }
+                        $this->crud->displayAs([
+                            'title'         => 'Titulo',
+                            'sub_title'     => 'Sub Titulo',
+                            'description'   => 'Coordenadas'
                         ]);
                         break;
                     default:
@@ -499,6 +522,20 @@ class TableController extends BaseController
                         break;
                 }
 
+                switch ($table) {
+                    case 'banner_contact':
+                        $textEditor = ['title', 'sub_title'];
+                        break;
+                    
+                    default:
+                        $textEditor = ['title', 'sub_title', 'description'];
+                        break;
+                }
+                
+                $this->crud->setTexteditor($textEditor);
+                $this->crud->columns($columns);
+                $this->crud->editFields($columns);
+                $this->crud->addFields($columns);
 
                 break;
             case 'banner_detail':
@@ -509,6 +546,7 @@ class TableController extends BaseController
                     case 'banner_home':
                     case 'banner_about':
                     case 'banner_blog':
+                    case 'banner_footer':
                     case 'how_works':
                     case 'medios':
                     case 'why':
@@ -517,7 +555,7 @@ class TableController extends BaseController
                         switch ($type) {
                             case 'enlaces':
                                 $component->title = "Enlaces";
-                                $columns = ['orden', 'title', 'url'];
+                                $columns = ['orden', 'title', 'url', 'status'];
                                 break;
                             case 'indicadores':
                                 $component->title = "Indicadores";
@@ -525,7 +563,7 @@ class TableController extends BaseController
                                 break;
                             case 'pasos':
                                 $component->title = "Pasos";
-                                $columns = ['orden', 'title', 'description', 'file'];
+                                $columns = ['orden', 'title', 'sub_title', 'description', 'file', 'status'];
                                 $this->crud->setFieldUpload('file', 'master/img/pages/details', '/master/img/pages/details');
                                 break;
                             case 'events':
@@ -549,7 +587,7 @@ class TableController extends BaseController
                                 break;
                             case 'preguntas':
                                 $component->title = "Preguntas y respuestas";
-                                $columns = ['orden', 'title', 'description'];
+                                $columns = ['orden', 'title', 'description', 'status'];
                                 break;
                         }
                         break;
@@ -571,11 +609,14 @@ class TableController extends BaseController
                 break;
             case 'banner_blog_details':
                 
-                $columns = ['title', 'sub_title', 'description', 'url', 'icon', 'file'];
+                $columns = ['title', 'sub_title', 'description', 'url', 'icon', 'ref_name', 'ref_link', 'ref_url', 'created_at'];
                 $this->crud->displayAs([
                     'description'   => 'Descripción',
                     'icon'          => 'Boton',
                     'file'          => 'Imagen',
+                    'ref_name'      => 'Autor',
+                    'ref_link'      => 'Texto referencia',
+                    'ref_url'       => 'Enlace autor'
                 ]);
 
                 $this->crud->addFields($columns);
@@ -598,9 +639,10 @@ class TableController extends BaseController
 
                 break;
             case 'banner_galery_details':
-                $columns = ['file'];
+                $columns = ['file', 'url', 'created_at'];
                 $this->crud->displayAs([
                     'file'          => 'Imagen',
+                    'created_at'    => 'Fecha Creación'
                 ]);
 
                 $this->crud->addFields($columns);
@@ -621,9 +663,10 @@ class TableController extends BaseController
                 break;
             case 'banner_testimony_details':
             
-                $columns = ['title', 'url'];
+                $columns = ['title', 'url', 'created_at'];
                 $this->crud->displayAs([
-                    'description'   => 'Descripción'
+                    'description'   => 'Descripción',
+                    'created_at'    => 'Fecha Creación'
                 ]);
 
                 $this->crud->addFields($columns);
@@ -644,13 +687,41 @@ class TableController extends BaseController
                 });
 
                 break;
-            case 'plans':
+            case 'banner_contact_detail':
+                $columns = ['title', 'sub_title', 'description', 'url', 'icon'];
                 $this->crud->displayAs([
                     'description'   => 'Descripción',
-                    'discount'      => 'Descuento',
-                    'stock'         => 'Stock'
+                    'icon'          => 'Boton',
                 ]);
-                $columns = ['description', 'discount', 'stock', 'image'];
+
+                $this->crud->addFields($columns);
+                $this->crud->editFields($columns);
+                $this->crud->columns($columns);
+
+                $this->crud->setTexteditor(['title', 'sub_title', 'description']);
+
+                $b_model = new Banner();
+
+                $banner = $b_model->where(['reference' => $reference])->first();
+                $this->crud->where(['reference' => $banner->id, 'type' => $table]);
+
+                $this->crud->callbackBeforeInsert(function ($stateParameters) use($banner, $table) {
+                    $stateParameters->data['reference'] = $banner->id;
+                    $stateParameters->data['type'] = $table;
+                    return $stateParameters;
+                });
+                break;
+            case 'plans':
+                $this->crud->displayAs([
+                    'title'         => 'Titulo',
+                    'sub_title'     => 'Sub titulo',
+                    'description'   => 'Descripción',
+                    'discount'      => 'Descuento',
+                    'stock'         => 'Stock',
+                    'value'         => 'Valor',
+                    'button'        => 'Botón'
+                ]);
+                $columns = ['title', 'sub_title', 'description', 'value', 'discount', 'stock', 'image', 'icon', 'button', 'url'];
                 $this->crud->columns($columns);
                 $this->crud->editFields($columns);
                 $this->crud->addFields($columns);

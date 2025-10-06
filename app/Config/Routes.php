@@ -37,6 +37,7 @@ $routes->get('/', 'HomePageController::index');
 $routes->get('/about', 'HomePageController::about');
 $routes->get('/knowthebusiness', 'HomePageController::knowthebusiness');
 $routes->get('/knowthebusiness/simulation', 'HomePageController::knowthebusiness_simulation');
+$routes->get('/knowthebusiness/faq', 'HomePageController::knowthebusiness_faq');
 $routes->get('/blog', 'HomePageController::blog');
 $routes->get('/blog/(:num)', 'HomePageController::blog_detail/$1');
 $routes->get('/testimonials', 'HomePageController::testimonials');

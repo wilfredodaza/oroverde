@@ -132,6 +132,22 @@ class HomePageController extends BaseController
         ]);
     }
 
+    public function knowthebusiness_faq(){
+        $banner  = $this->b_model->where(['type' => 'faq'])->first();
+        $title = $banner->title;
+        $sub_title = $banner->sub_title;
+        $image = $banner->image;
+        $banner->sub_title = $title;
+        $banner->title = $sub_title;
+        $banner->image = null;
+
+        // var_dump($product); die;
+
+        return view('home_page/business/faq', [
+            'banner'    => $banner
+        ]);
+    }
+
     public function blog(){
         $banner = $this->b_model->where(['type' => 'banner_blog'])->first();
         
@@ -173,9 +189,22 @@ class HomePageController extends BaseController
         
         $banner = $this->b_model->where(['type' => 'banner_galery'])->first();
 
-        // var_dump($banner); die;
+        $years = getYearsImage($banner->details);
+        $result = [];
+
+        foreach ($years as $year) {
+            $images = getImagesByYear($banner->details, $year);
+            $group = groupImagesByReadableDate($images);
+            $result[] = (object) [
+                "year"      => $year,
+                "groups"    => $group
+            ];
+        }
+
+        // var_dump($result); die;
         return view('home_page/stories/galery', [
-            'banner'    => $banner                                  
+            'banner'    => $banner,
+            'years'     => $result                           
         ]);
     }
 }

@@ -1,14 +1,32 @@
+<?php $footer = getFooter() ?>
+
 <!-- Footer: Start -->
 <footer class="landing-footer">
       <div class="footer-top bg-primary position-relative overflow-hidden">
         <div class="container position-relative">
+            <?php if(!empty($footer->title)): ?>
+              <h2 class="text-center text-secondary"><?= $footer->title ?></h2>
+            <?php endif ?>
             <div class="d-flex justify-content-between align-items-center">
-                <a href="landing-page.html" class="app-brand-link mb-6">
-                  Oro Verde
-                </a>
-                <a href="javascript:void(0);" class=" mb-4 btn btn-secondary text-primary">
-                    Quiero registrarme a una reunion
-                </a>
+                <?php if(!empty($footer->image)): ?>
+                  <div>
+                      <a href="<?= base_url() ?>" class="app-brand-link">
+      
+                        <span class="app-brand-logo demo">
+                            <span class="d-flex align-items-center justify-content-center flex-wrap">
+                                <img src="<?= base_url(['master/img/pages/home', isset($footer->image) && !empty($footer->image) ? $footer->image : 'logo2.png']) ?>" alt="" height="100">
+                            </span>
+                        </span>
+                      </a>
+                  </div>
+                <?php endif ?>
+                <div class="d-flex justify-content-center align-items-center">
+                  <?php foreach ($footer->details as $key => $detail): ?>
+                    <?php if($detail->type == "enlaces"): ?>
+                        <a href="<?= strpos($detail->url, 'http') !== false ? $detail->url : base_url([$detail->url]) ?>" class="btn btn-lg btn-secondary waves-effect waves-light text-primary mx-5"><?= $detail->title ?></a>
+                    <?php endif ?>
+                  <?php endforeach ?>
+                </div>
             </div>
         </div>
       </div>

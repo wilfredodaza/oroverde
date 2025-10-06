@@ -21,18 +21,17 @@
                         <h4 class="p-0 m-0">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6 text-center text-primary fw-bold">
-                                    <?= $plan->stock ?> <?= $plan->product_name ?>
+                                    <?= $plan->stock ?> <?= $plan->title ?>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 d-flex justify-content-end align-items-center flex-wrap">
-                                    <small class="te">Precio: </small>
+                                    <small class="te"><?= $plan->sub_title ? "$plan->sub_title:" : "" ?></small>
                                     <span class="text-primary fw-bold text-price w-100">
-                                        $
+                                        
                                         <?php
-                                            $value = $plan->product_price * $plan->stock;
-                                            if($plan->discount > 0)
-                                                $value = $value - (($value * $plan->discount) / 100);
+                                            if($plan->discount > 0 && $plan->value > 0)
+                                                $plan->value = $plan->value - (($plan->value * $plan->discount) / 100);
                                         ?>
-                                        <?= number_format($value, '2', ',', '.') ?>
+                                        <?= number_format($plan->value, '2', ',', '.') ?>
                                     </span>
 
                                 </div>
@@ -40,10 +39,15 @@
                         </h4>
                     </div>
                     <div class="card-body p-2">
-                        <p class="card-text text-center">Un Vite equivale a la cosecha de 1 árbol de aguacate Hass durante 20 años.</p>
+                        <span class="card-text text-center">
+                            <?= $plan->description ?>
+                        </span>
                         <!-- <hr /> -->
                         <div class="text-center">
-                            <a href="payment-page.html" class="btn btn-primary w-100"><i class="ri-shopping-cart-2-line"></i> Comprar ahora</a>
+                            <a href="<?= esUrlValida($plan->url) ? $plan->url : base_url([$plan->url]) ?>" class="btn btn-primary w-100">
+                                <i class="<?= $plan->icon ? $plan->icon : "ri-shopping-cart-2-line" ?> mx-2"></i>
+                                <?= $plan->button ? $plan->button : "Comprar ahora" ?>
+                            </a>
                         </div>
                     </div>
                 </div>

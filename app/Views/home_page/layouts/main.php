@@ -22,7 +22,7 @@
     <meta name="keywords" content="<?= isset($config->meta_keywords) && !empty($config->meta_keywords) ? $config->meta_keywords : "" ?>">
 
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="<?= isset($config->favicon) && !empty($config->favicon) ? base_url(['assets/img/favicon', $config->favicon]) : base_url(['assets/img/favicon/favicon.ico']) ?>" />
+    <link rel="icon" type="image/x-icon" href="<?= isset($config->favicon) && !empty($config->favicon) ? base_url(['master/img/logos', $config->favicon]) : base_url(['assets/img/favicon/favicon.ico']) ?>" />
 
     <?php
       $color_primary = isset(configInfo()['primary_color']) && !empty(configInfo()['primary_color']) ? (string) configInfo()['primary_color'] : '8e24aa';
@@ -102,7 +102,9 @@
 
     <!-- / Sections:End -->
 
-    <?= view('home_page/layouts/footer') ?>
+    <?= view('home_page/layouts/footer', [
+      'config'  => $config
+    ]) ?>
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
@@ -125,6 +127,14 @@
 
     <script src="<?= base_url(["master/js/functions/functions.js?v=".getCommit()]) ?>"></script>
 
+    
+
+    <script>
+        const getContact = () => (<?= json_encode(getContact()) ?>);
+    </script>
+
     <?= $this->renderSection('scripts') ?>
+
+    
   </body>
 </html>

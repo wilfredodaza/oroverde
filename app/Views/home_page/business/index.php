@@ -20,7 +20,7 @@
                     <div class="card">
                         <div class="row g-0 align-items-center <?= ($key % 2) !== 0 ? "flex-direction-row-reverse" : "" ?>">
                             <div class="col-md-4">
-                                <img class="card-img card-img-<?= ($key % 2) === 0 ? "left" : "right" ?>" src="<?= $detail->image ? base_url(['master/img/pages/home', $detail->image]) : base_url(['assets/img/elements/17.jpg']) ?>" alt="Card image">
+                                <img class="card-img card-img-<?= ($key % 2) === 0 ? "left" : "right" ?>" src="<?= $detail->image ? base_url(['master/img/pages/details', $detail->image]) : base_url(['assets/img/elements/17.jpg']) ?>" alt="Card image">
                             </div>
                             <div class="col-md-8 px-2">
                                 <div class="card-body px-5">

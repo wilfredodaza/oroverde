@@ -1,11 +1,24 @@
 <?php
 use App\Models\ConfigPage;
 use App\Models\Menu;
+use App\Models\Banner;
 
 function getConfigPage(){
     $c_model = new ConfigPage();
     $config = $c_model->first();
     return $config;
+}
+
+function getContact(){
+    $b_model = new Banner();
+    $contact = $b_model->where(['type'  => 'banner_contact'])->first();
+    return $contact;
+}
+
+function getFooter(){
+    $b_model = new Banner();
+    $contact = $b_model->where(['type'  => 'banner_footer'])->first();
+    return $contact;
 }
 
 function getMenu(){

@@ -1,9 +1,10 @@
 <?php $menus = getMenu() ?>
+<?php $config = getConfigPage() ?>
 <!-- Navbar: Start -->
 <nav class="layout-navbar shadow-none pt-5 px-10" id="nav-page">
-    <div class="navbar navbar-expand-lg landing-navbar border-top-0 px-8 py-4 px-md-8 border-radius-50">
+    <div class="navbar navbar-expand-lg landing-navbar border-top-0 px-8 py-1 px-md-8 border-radius-50">
         <!-- Menu logo wrapper: Start -->
-        <div class="navbar-brand app-brand demo d-flex py-0 py-lg-6 me-6">
+        <div class="navbar-brand app-brand demo d-flex py-0 py-lg-1 me-6">
             <!-- Mobile menu toggle: Start-->
             <button
             class="navbar-toggler border-0 px-0 me-2"
@@ -18,8 +19,11 @@
             <!-- Mobile menu toggle: End-->
             <a href="<?= base_url() ?>" class="app-brand-link">
             <span class="app-brand-logo demo">
-                <span style="color: #666cff">
-                Oro Verde
+                <span class="d-flex align-items-center justify-content-center flex-wrap">
+                    <img src="<?= base_url(['master/img/logos/', isset($config->menu) && !empty($config->menu) ? $config->menu : 'logo2.png']) ?>" alt="" height="45">
+                    <?php if(isset($config->title_logo) && !empty($config->title_logo)): ?>
+                        <h2 class="w-100 mb-0 text-center text-primary"><?= strtolower(preg_replace('/\s+/', '', $config->title_logo))?></h2>
+                    <?php endif ?>
                 </span>
             </span>
             </a>
@@ -88,10 +92,10 @@
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link fw-medium" href="landing-page.html#landingTeam">Comprar ahora</a>
+                <a class="nav-link fw-medium" href="<?= base_url(["knowthebusiness/simulation"]) ?>">Simulador</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link fw-medium" href="../vertical-menu-template/index.html" target="_blank">Quiero ser parte</a>
+                <a class="nav-link fw-medium" href="<?= base_url(["knowthebusiness/faq"]) ?>">FAQ</a>
             </li>
             </ul>
         </div>
