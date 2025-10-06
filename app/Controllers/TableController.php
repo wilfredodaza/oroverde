@@ -104,7 +104,7 @@ class TableController extends BaseController
                     ]);
                     $this->crud->unsetDelete();
                     $columns = [
-                        'unit_age_id', 'name', 'description', 'price', 'stock','sales_percentage',
+                        'unit_age_id', 'name', 'description', 'sales_percentage',
                         'individual_value', 'ipc', 'status'];
                     $this->crud->columns($columns);
                     $this->crud->editFields($columns);
