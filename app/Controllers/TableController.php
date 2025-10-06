@@ -446,6 +446,9 @@ class TableController extends BaseController
                     case 'banner_product':
                     case 'banner_contact':
                         $columns = ['title', 'sub_title', 'description'];
+                        $this->crud->setActionButton('Enlaces', 'fa fa-link', function ($row) use($table) {
+                            return base_url(['table',"enlaces", $row->id]);
+                        });
                         break;
                     case 'knowthebusiness_details':
                         $columns = ['title', 'sub_title', 'description', 'image'];
@@ -547,6 +550,7 @@ class TableController extends BaseController
                     case 'banner_about':
                     case 'banner_blog':
                     case 'banner_footer':
+                    case 'banner_contact':
                     case 'how_works':
                     case 'medios':
                     case 'why':

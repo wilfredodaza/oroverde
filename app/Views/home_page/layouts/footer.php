@@ -17,10 +17,11 @@
                 <?php endif ?>
                 <div class="row mb-12 g-6">
                     <?php foreach ($contact->details as $key => $detail): ?>
+                      <?php if($detail->type == 'banner_contact_detail'): ?>
                         <div class="col-md-6 col-lg-4">
                             <div class="card h-100">
                                 <div class="card-body">
-                                    <h5 class="card-title"><?= $detail->title ?></h5>
+                                    <h5 class="card-title"><?= "$detail->title" ?></h5>
                                     <?= $detail->description ?>
                                     <?php if(!empty($detail->url) && !empty($detail->icon)): ?>
                                         <a href="<?= strpos($detail->url, 'http') !== false ? $detail->url : base_url([$detail->url]) ?>" class="btn btn-primary waves-effect waves-light w-100">
@@ -32,10 +33,11 @@
                                 </div>
                             </div>
                         </div>
+                      <?php endif ?>
                     <?php endforeach ?>
                 </div>
                 <div class="d-flex justify-content-center align-items-center">
-                  <?php foreach ($footer->details as $key => $detail): ?>
+                  <?php foreach ($contact->details as $key => $detail): ?>
                     <?php if($detail->type == "enlaces"): ?>
                         <a href="<?= strpos($detail->url, 'http') !== false ? $detail->url : base_url([$detail->url]) ?>" class="btn btn-lg btn-secondary waves-effect waves-light text-primary mx-5"><?= $detail->title ?></a>
                     <?php endif ?>
