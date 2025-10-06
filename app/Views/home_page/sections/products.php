@@ -24,8 +24,9 @@
                                     <?= $plan->stock ?> <?= $plan->title ?>
                                 </div>
                                 <div class="col-lg-6 col-md-6 col-sm-6 d-flex justify-content-end align-items-center flex-wrap">
-                                    <small class="te"><?= $plan->sub_title ? "$plan->sub_title:" : "" ?></small>
                                     <span class="text-primary fw-bold text-price w-100">
+                                        <small class="text-muted" style="line-height: 0;"><?= $plan->sub_title ? "$plan->sub_title:" : "" ?></small>
+                                        <br>
                                         
                                         <?php
                                             if($plan->discount > 0 && $plan->value > 0)
@@ -42,13 +43,15 @@
                         <span class="card-text text-center">
                             <?= $plan->description ?>
                         </span>
-                        <!-- <hr /> -->
-                        <div class="text-center">
-                            <a href="<?= esUrlValida($plan->url) ? $plan->url : base_url([$plan->url]) ?>" class="btn btn-primary w-100">
-                                <i class="<?= $plan->icon ? $plan->icon : "ri-shopping-cart-2-line" ?> mx-2"></i>
-                                <?= $plan->button ? $plan->button : "Comprar ahora" ?>
-                            </a>
-                        </div>
+                        <?php if(!empty($plan->url) && !empty($plan->button)): ?>
+                            <hr />
+                            <div class="text-center">
+                                <a href="<?= esUrlValida($plan->url) ? $plan->url : base_url([$plan->url]) ?>" class="btn btn-primary w-100">
+                                    <i class="<?= $plan->icon ? $plan->icon : "ri-shopping-cart-2-line" ?> mx-2"></i>
+                                    <?= $plan->button ? $plan->button : "Comprar ahora" ?>
+                                </a>
+                            </div>
+                        <?php endif ?>
                     </div>
                 </div>
             </div>
