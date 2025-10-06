@@ -76,7 +76,8 @@
                 <div class="col-md row">
                     <?php foreach($why->details as $key => $detail): ?>
                         <?php if($detail->type == "video_why"): ?>
-                            <div class="col-lg-6 col-md-12 col-sm-12 mb-6 mt-5">
+
+                            <div class="col-lg-12 col-md-12 col-sm-12 mb-6 mt-5">
                                 <div class="card">
                                     <div class="card-body">
                                         <div class="plyr__video-embed" id="plyr-video-player-<?= $detail->id ?>">
