@@ -61,6 +61,7 @@
 
     <!-- Menu waves for no-customizer fix -->
     <link rel="stylesheet" href="<?= base_url(['assets/vendor/libs/node-waves/node-waves.css']) ?>" />
+    <link rel="stylesheet" href="<?= base_url(['assets/css/colors.css?v='.getCommit()]) ?>" />
 
     <!-- Core CSS -->
     <link rel="stylesheet" href="<?= base_url(['assets/vendor/css/rtl/core.css']) ?>" class="template-customizer-core-css" />

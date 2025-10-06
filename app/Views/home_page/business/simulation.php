@@ -34,7 +34,7 @@
                 
                 <div class="card mb-3 h-100">
                     
-                    <h5 class="card-header">Cantidad de Vites</h5>
+                    <h5 class="card-header">Cantidad de Semillas de oro</h5>
                     <div class="card-body">
                         <!-- <small class="text-light fw-medium">Cantidad de Vites</small> -->
                         <div id="slider-product" class="my-6"></div>

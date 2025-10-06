@@ -21,27 +21,27 @@ function calculate_data(){
     const table_info = `
         <tbody>
             <tr>
-                <td>Precio actual 1 Vite</td>
+                <td class="grey lighten-3">Precio actual 1 Semilla de oro</td>
                 <td>${formatPrice(value_vite)}</td>
-                <td>Cantidad de vites</td>
+                <td class="grey lighten-3">Cantidad de Semillas de oro</td>
                 <td>${formatearMiles(quantity)}</td>
             </tr>
             <tr>
-                <td>Descuento</td>
+                <td class="grey lighten-3">Descuento</td>
                 <td>${discount} %</td>
-                <td>Valor Total Compra Sin Descuento</td>
+                <td class="grey lighten-3">Valor Total Compra Sin Descuento</td>
                 <td>${formatPrice(value_undiscount)}</td>
             </tr>
             <tr>
-                <td>Valor Total Compra Con Descuento</td>
+                <td class="grey lighten-3">Valor Total Compra Con Descuento</td>
                 <td>${formatPrice(value)}</td>
-                <td>Ahorro en tu compra</td>
+                <td class="grey lighten-3">Ahorro en tu compra</td>
                 <td>${formatPrice(value_discount)}</td>
             </tr>
             <tr>
-                <td>Cosecha estimada en 20 años (kg)</td>
+                <td class="grey lighten-3">Cosecha estimada en 20 años (kg)</td>
                 <td>${formatearMiles(total_quantity)}</td>
-                <td>Valor estimado de esa producción hoy: <br>${formatearMiles(total_quantity)} * ${formatPrice(prom_price)}</td>
+                <td class="grey lighten-3">Valor estimado de esa producción hoy: <br>${formatearMiles(total_quantity)} * ${formatPrice(prom_price)}</td>
                 <td>${formatPrice(total_quantity * prom_price)}</td>
             </tr>
         </tbody>
@@ -74,8 +74,8 @@ function simulate(){
                 <thead>
                     <tr>
                         <th>Tiempo</th>
-                        <th>Producción<br>Estimada Kg por<br>1 Vite</th>
-                        <th>Producción<br>Estimada<br>Kg total<br>de Vites</th>
+                        <th>Producción<br>Estimada Kg por<br>1 Semilla de Oro</th>
+                        <th>Producción<br>Estimada<br>Kg total<br>de Semillas de oro</th>
                         <th>Precio Estimado<br>x Kg</th>
                         <th>% Anual<br>Estimado Neto<br>(${product.sales_percentage}% de la venta)</th>
                         <th>Ingreso Neto Anual<br>Estimado (${product.sales_percentage}% de<br>la venta)</th>
