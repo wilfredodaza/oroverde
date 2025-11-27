@@ -47,6 +47,7 @@ class Filters extends BaseConfig
                 'config/*',
                 'dashboard/*',
                 'dashboard',
+                'password'
             ]
         ],
         'permission' => [

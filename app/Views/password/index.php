@@ -121,5 +121,5 @@
 
 <?= $this->section('javaScripts'); ?>
   <!-- Page JS -->
-  <script src="<?= base_url(["master/js/password/password.js"]) ?>"></script>
+  <script src="<?= base_url(['master/js/password/password.js?v='.getCommit()]) ?>"></script>
 <?= $this->endSection() ?>

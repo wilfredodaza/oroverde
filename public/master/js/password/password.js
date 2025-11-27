@@ -16,7 +16,9 @@ async function sendPassword(event){
     $('#btn-send').attr('disabled', true);
     $('#btn-send').html('Enviando... <i class="ri-restart-line ri-spin"></i>');
 
-    await proceso_fetch(url, data).then(respond =>{
+    const respond = await fetchHelper.post(url, data, {}, 500)
+
+    // await proceso_fetch(url, data).then(respond =>{
         $('#btn-send').attr('disabled', false);
         $('#btn-send').html('Renovar contraseña');
         if(respond.status == 403){
@@ -29,6 +31,6 @@ async function sendPassword(event){
             $('#card-success').show();
             $('#formAccountSettings')[0].reset();
         }
-    })
+    // })
     return false;
 }
