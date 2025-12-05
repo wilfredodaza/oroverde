@@ -1067,11 +1067,14 @@ class MovementsController extends BaseController
 
         $company = $c_model->find(1);
 
+        $separador = '<div style="border-bottom: 1px solid black"></div>';
+
         // return $this->respond([$movement, $company]);
         $page = view('pdf/contract', [
             'movement'  => $movement,
             'company'   => $company,
-            'title'     => "CONTRATO DE COMPRA Y VENTA DE FRUTOS O COSA FUTURA"
+            'title'     => "CONTRATO DE COMPRA Y VENTA DE FRUTOS O COSA FUTURA",
+            'separador' => $separador
         ]);
 
         // print(FCPATH); die;

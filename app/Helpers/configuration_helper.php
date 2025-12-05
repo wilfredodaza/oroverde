@@ -104,3 +104,88 @@ function formatNumber($val) {
 function esUrlValida($cadena) {
     return filter_var($cadena, FILTER_VALIDATE_URL) !== false;
 }
+
+function numberLetter($numero)
+{
+    $formatter = new NumberFormatter("es", NumberFormatter::SPELLOUT);
+
+    // Separar parte entera y decimal
+    $partes = explode('.', number_format($numero, 2, '.', ''));
+    $entero = intval($partes[0]);
+    $decimal = intval($partes[1]);
+
+    // Convertir parte entera
+    $textoEntero = ucfirst($formatter->format($entero));
+
+    // Construir resultado
+    if ($decimal > 0) {
+        $textoDecimal = $formatter->format($decimal);
+        return "$textoEntero pesos con $textoDecimal centavos";
+    } else {
+        return "$textoEntero pesos";
+    }
+}
+
+function porcentajeALetras($numero)
+{
+    $formatter = new NumberFormatter("es", NumberFormatter::SPELLOUT);
+
+    // Separar parte entera y decimal
+    $partes = explode('.', number_format($numero, 2, '.', ''));
+    $entero = intval($partes[0]);
+    $decimal = intval($partes[1]);
+
+    // Convertir parte entera
+    $textoEntero = $formatter->format($entero);
+
+    // Si tiene decimal distinto de 00 → escribir decimales
+    if ($decimal > 0) {
+        // quitar ceros a la derecha
+        $decimalTexto = rtrim($partes[1], '0');
+        $decimalTexto = $formatter->format(intval($decimalTexto));
+
+        return mb_strtoupper(ucfirst("$textoEntero punto $decimalTexto por ciento"));
+    }
+
+    // Sin decimales
+    return mb_strtoupper(ucfirst("$textoEntero por ciento"));
+}
+
+function numberYearLetter($numero)
+{
+    $formatter = new NumberFormatter("es", NumberFormatter::SPELLOUT);
+
+    // Separar parte entera y decimal
+    $partes = explode('.', number_format($numero, 2, '.', ''));
+    $entero = intval($partes[0]);
+    $decimal = intval($partes[1]);
+
+    // Convertir parte entera
+    $textoEntero = ucfirst($formatter->format($entero));
+
+    // Construir resultado
+    return mb_strtoupper("$textoEntero");
+}
+
+function renderTemplate($template, $vars)
+{
+    // Procesar SHOW / ELSE / ENDIF
+    $template = preg_replace_callback(
+        '/\{\{SHOW\}\}(.*?)\{\{ELSE\}\}(.*?)\{\{ENDIF\}\}/s',
+        function ($m) use ($vars) {
+
+            $condition = !empty($vars['{{BENEFICIARIOS}}']);
+
+            return $condition ? $m[1] : $m[2];
+        },
+        $template
+    );
+
+    // Reemplazar variables simples
+    foreach ($vars as $k => $v) {
+        $template = str_replace('{{'.$k.'}}', $v, $template);
+    }
+
+    return $template;
+}
+

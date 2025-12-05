@@ -59,7 +59,7 @@ $(() => {
                 action: () => {
                     resetFormulario();
 
-                    $("#save-movement-Label").html(`Añadir proyecto`);
+                    $("#save-movement-Label").html(`Añadir venta`);
 
                     const offCanvasElement = document.querySelector('#save-movement');
                     let offCanvasEl = new bootstrap.Offcanvas(offCanvasElement);
@@ -167,7 +167,7 @@ function action(movement){
             break;
         case '2':
             action = `
-                <a href="${base_url(['dashboard/movements/contract', movement.id])}" target="_blank" class="btn btn-sm btn-text-secondary rounded-pill btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-success" data-bs-original-title="Ver contrato"><i class="ri-contract-line"></i></a>
+                <a href="${base_url(['dashboard/contract', movement.id])}" target="_blank" class="btn btn-sm btn-text-secondary rounded-pill btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-success" data-bs-original-title="Ver contrato"><i class="ri-contract-line"></i></a>
                 ${
                     movement.state_id != 11 ? `
                         <a href="javascript:void(0);" class="btn btn-sm btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false"><i class="ri-more-2-line"></i></a>

@@ -60,6 +60,9 @@ $routes->post('password/updated', 'PasswordController::updated');
 
 $routes->group('dashboard', function ($routes){
 	$routes->get('', 'DashboardController::index');
+	$routes->get('perfile', 'DashboardController::perfile');
+	$routes->put('perfile', 'DashboardController::perfileUpdate');
+	$routes->put('perfile/customer', 'DashboardController::customerUpdate');
 
 	$routes->group('movements', function($routes){
 		$routes->get('(:segment)', 'Sistem\MovementsController::index/$1');
@@ -67,7 +70,6 @@ $routes->group('dashboard', function ($routes){
 		$routes->post('save', 'Sistem\MovementsController::save');
 		$routes->put('save/(:num)', 'Sistem\MovementsController::update/$1');
 		$routes->delete('save/(:num)', 'Sistem\MovementsController::decline/$1');
-		$routes->get('contract/(:num)', 'Sistem\MovementsController::contract/$1');
 		$routes->post('(:num)/indicadores', 'Sistem\MovementsController::indicadores/$1');
 	});
 
@@ -77,6 +79,12 @@ $routes->group('dashboard', function ($routes){
 		$routes->post('save', 'Sistem\ProjectController::save');
 		$routes->get('kardex/(:num)', 'Sistem\ProjectController::kardex/$1');
 		$routes->post('indicadores', 'Sistem\ProjectController::indicadores');
+	});
+
+	$routes->group('contract', function($routes){
+		$routes->get('', 'Sistem\ContractController::index');
+		$routes->post('save', 'Sistem\ContractController::save');
+		$routes->get('(:num)', 'Sistem\ContractController::pdf/$1');
 	});
 });
 

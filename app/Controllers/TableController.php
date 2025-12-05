@@ -14,6 +14,7 @@ use App\Models\UnitProductive;
 use App\Models\PriceAge;
 use App\Models\Product;
 use App\Models\Password;
+use App\Models\Company;
 
 class TableController extends BaseController
 {
@@ -38,6 +39,36 @@ class TableController extends BaseController
         if($component) {
             $this->crud->setTable($component->table);
             switch ($component->url) {
+
+                case 'company':
+                    $c_model = new Company();
+                    $count = $c_model->countAllResults();
+                    if($count != 0){
+                        $this->crud->unsetAdd();
+                    }
+                    $this->crud->displayAs([
+                        'type_document_id'  => 'Tipo de documento',
+                        'name'              => 'Nombre',
+                        'number_nit'        => 'N. Nit',
+                        'origin'            => 'Origen',
+                        'bussiness_number'  => 'Registro mercantil',
+                        'propierty'         => 'Propietario',
+                        'issued'            => 'Expedido',
+                        'ubication'         => 'Ubicación',
+                        'number_document'   => 'Número Doc. Propietario',
+                        'created_at'        => 'Fecha creación'
+                    ]);
+
+                    $this->crud->unsetColumns(['updated_at', 'deleted_at']);
+
+                    $this->crud->unsetEditFields(['updated_at', 'deleted_at']);
+                    $this->crud->unsetAddFields(['updated_at', 'deleted_at']);
+
+                    $this->crud->setRelation('type_document_id', 'type_documents', '{name} - {abbreviation}');
+
+
+                    break;
+
                 case 'usuarios':
                     $this->crud->setActionButton('Algo mas que aqeullo', 'fa fa-bars', function ($row) {
                         return base_url(['table', 'info_creditos', $row->id]);
@@ -277,6 +308,93 @@ class TableController extends BaseController
                         return $stateParameters;
                     });
                     break;
+                case 'customer':
+                    $this->crud->where(['id' => session('user')->customer_id]);
+                    $columns = [
+                        'type_document_id',
+                        'name',
+                        'number_document',
+                        'issued',
+                    ];
+                    $this->crud->columns($columns);
+                    $this->crud->editFields($columns);
+                    $this->crud->setRelation('type_document_id', 'type_documents', '{name} - {abbreviation}');
+                    $this->crud->unsetDelete();
+                    $this->crud->unsetAdd();
+                    $this->crud->displayAs([
+                        'type_document_id'  => 'Tipo de documento',
+                        'name'              => 'Nombre',
+                        'number_document'   => '# Documento',
+                        'issued'            => 'Fecha Expedición',
+                    ]);
+
+                    break;
+                case 'beneficiary':
+                    $this->crud->where(['customer_id' => session('user')->customer_id]);
+                    $columns = [
+                        'type_document_id',
+                        'name',
+                        'number_document',
+                        'created_at'
+                    ];
+                    $this->crud->columns($columns);
+                    if (($key = array_search('created_at', $columns)) !== false) {
+                        unset($columns[$key]);
+                    }
+                    $this->crud->editFields($columns);
+                    $this->crud->addFields($columns);
+                    $this->crud->setRelation('type_document_id', 'type_documents', '{name} - {abbreviation}');
+                    $this->crud->displayAs([
+                        'type_document_id'  => 'Tipo de documento',
+                        'name'              => 'Nombre',
+                        'number_document'   => '# Documento',
+                        'issued'            => 'Fecha Expedición',
+                        'created_at'        => 'Creado'
+                    ]);
+
+                    $this->crud->callbackBeforeInsert(function ($stateParameters) {
+                        $stateParameters->data['created_at'] = date('Y-m-d h:i:s');
+                        $stateParameters->data['created_at'] = date('Y-m-d h:i:s');
+                        $stateParameters->data['state_id'] = 1;
+                        $stateParameters->data['customer_id'] = session('user')->customer_id;
+                        return $stateParameters;
+                    });
+                    $this->crud->callbackBeforeUpdate(function ($stateParameters) {
+                        $stateParameters->data['updated_at'] = date('Y-m-d h:i:s');
+                        return $stateParameters;
+                    });
+                    break;
+                case 'accounts':
+                    $this->crud->where(['customer_id' => session('user')->customer_id]);
+                    $this->crud->displayAs([
+                        'state_id'              => 'Estado',
+                        'bank_id'               => 'Banco',
+                        'bank_account_type_id'  => 'Tipo de cuenta',
+                        'name'                  => 'Cuenta',
+                        'number_account'        => '# Cuenta',
+                    ]);
+                    
+                    $columns = [
+                        'state_id',
+                        'bank_id',
+                        'bank_account_type_id',
+                        'name',
+                        'number_account',
+                    ];
+    
+                    $this->crud->setRelation('state_id', 'states', 'name', ['code' => 'Default']);
+                    $this->crud->setRelation('bank_id', 'banks', 'name');
+                    $this->crud->setRelation('bank_account_type_id', 'bank_account_types', '{name} - {code}');
+    
+                    $this->crud->addFields($columns);
+                    $this->crud->editFields($columns);
+                    $this->crud->columns($columns);
+
+                    $this->crud->callbackBeforeInsert(function ($stateParameters) {
+                        $stateParameters->data['customer_id'] = session('user')->customer_id;
+                        return $stateParameters;
+                    });
+                    break;
                 
                 default:
                     # code...
@@ -315,13 +433,13 @@ class TableController extends BaseController
                 $this->crud->setTable('plans');
                 $component = (object) ["title" => 'Planes de producto', "description" => ""];
                 break;
-            case 'price_ages_p':
-                $this->crud->setTable('price_ages');
-                $component = (object) ["title" => '', "description" => ""];
+            // case 'price_ages_p':
+            //     $this->crud->setTable('price_ages');
+            //     $component = (object) ["title" => 'Valores edad', "description" => ""];
                 break;
             case 'harvests':
                 $this->crud->setTable('harvests');
-                $component = (object) ["title" => '', "description" => ""];
+                $component = (object) ["title" => 'Cosechas', "description" => ""];
                 break;
 
             
@@ -339,6 +457,7 @@ class TableController extends BaseController
                 $component = (object) ["title" => "{$unit_productive->name} - {$unit_productive->unit_age_name}", "description" => ""];
                 break;
             case 'price_ages_p':
+                $this->crud->setTable('price_ages');
                 $p_model = new Product();
                 $product = $p_model
                     ->select([

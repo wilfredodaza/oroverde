@@ -7,6 +7,10 @@ use App\Models\Project;
 use App\Models\State;
 use App\Models\TypeMovement;
 use App\Models\Movement;
+use App\Models\Role;
+use App\Models\User;
+use App\Models\Customer;
+use App\Models\TypeDocument;
 
 class DashboardController extends BaseController
 {
@@ -80,8 +84,155 @@ class DashboardController extends BaseController
 	}
 
 	public function about()
-  {
-    return view('pages/about');
-  }
+	{
+		return view('pages/about');
+	}
+
+	public function perfile(){
+		$r_model = new Role();
+		$td_model = new TypeDocument();
+
+		$roles = $r_model->findAll();
+		$type_documents = $td_model->findAll();
+		
+		return view('pages/perfile', [
+			'roles' 			=> $roles,
+			'type_documents'	=> $type_documents
+		]);
+	}
+
+	public function perfileUpdate(){
+		try{
+			$data = $this->request->getJson();
+			$validation = \Config\Services::validation();
+			$id = session('user')->id;
+
+			$rules = [
+				'name'      => 'required|min_length[3]|max_length[50]',
+				'username'  => "required|alpha_numeric|min_length[4]|is_unique[users.username,id,{$id}]",
+				'email'     => "required|valid_email|is_unique[users.email,id,{$id}]"
+			];
+
+			$messages = [
+				'email' => [
+					'is_unique' => 'El correo electrónico ya está registrado por otro usuario.'
+				],
+				'username' => [
+					'is_unique' => 'El nombre de usuario ya está en uso.'
+				]
+			];
+
+			if (!$validation->setRules($rules, $messages)->run((array) $data)) {
+				return $this->respond([
+					'status' 	=> 'error',
+					'title'		=> 'Validación fallida '. $id,
+					'errors' 	=> $validation->getErrors()
+				], 200);
+			}
+
+			$user = [
+				'id'		=> $id,
+				'name'		=> $data->name,
+				'username'	=> $data->username,
+				'email'		=> $data->email
+			];
+
+			if($id == 1){
+				$user['role_id'] = $data->role;
+			}
+
+			$u_model = new User();
+			$u_model->save($user);
+			if(!empty(session('user')->customer_id)){
+				$c_model = new Customer();
+				$c_model->save([
+					'id'	=> session('user')->customer_id,
+					'name'	=> $data->name
+				]);
+			}
+
+			$info = $u_model
+				->select(['users.*', 'roles.name as role_name'])
+                ->join('roles', 'roles.id = users.role_id')
+			->find($id);
+			$info->password = $u_model->getPassword($id);
+			$session = session();
+			$session->set('user', $info);
+
+			return $this->respond([
+				'status' => 'success',
+				'message' => 'Datos de perfil actualizados correctamente.'
+			], 200);
+
+		}catch(\Exception $e){
+			return $this->respond(['title' => 'Error en el servidor', 'error' => $e->getMessage()], 500);
+		}
+	}
+
+	public function customerUpdate(){
+		try{
+			$data = $this->request->getJson();
+			$validation = \Config\Services::validation();
+			$id = session('user')->customer_id;
+
+			$rules = [
+				'issued'     	=> 'required',
+				'number'  		=> "required|numeric|min_length[4]|is_unique[customers.number_document,id,{$id}]",
+				'type_document'	=> "required"
+			];
+
+			$messages = [
+				'number' => [
+					'required' => 'El número de documento es obligatorio.',
+					'min_length' => 'El número minimo es de 4 caracteres.',
+					'is_unique' => 'El número de documento ya esta en uso.'
+				],
+				'type_document' => [
+					'required' => 'El tipo de documento es obligatorio.'
+				],
+				'issued' => [
+					'required'	=> 'La fecha de expedición es obligatoria.',
+				]
+			];
+
+			if (!$validation->setRules($rules, $messages)->run((array) $data)) {
+				return $this->respond([
+					'status' 	=> 'error',
+					'title'		=> 'Validación fallida',
+					'errors' 	=> $validation->getErrors()
+				], 200);
+			}
+
+			$customer = [
+				'id'				=> $id,
+				'issued'			=> $data->issued,
+				'number_document'	=> $data->number,
+				'type_document_id'	=> $data->type_document
+			];
+
+			$c_model = new Customer();
+			$c_model->save($customer);
+
+			
+			$id = session('user')->id;
+
+			$u_model = new User();
+			$info = $u_model
+				->select(['users.*', 'roles.name as role_name'])
+                ->join('roles', 'roles.id = users.role_id')
+			->find($id);
+			$info->password = $u_model->getPassword($id);
+			$session = session();
+			$session->set('user', $info);
+
+			return $this->respond([
+				'status' => 'success',
+				'message' => 'Datos de perfil actualizados correctamente.'
+			], 200);
+
+		}catch(\Exception $e){
+			return $this->respond(['title' => 'Error en el servidor', 'error' => $e->getMessage()], 500);
+		}
+	}
 
 }

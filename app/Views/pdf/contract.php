@@ -12,109 +12,71 @@
         </h1>
         
         <div class="content">
+
             <p>
-                Entre los suscritos a saber, de una parte: <?= $movement->customer->name ?>, mayor de edad, plenamente capaz
-                para contratar y obligarse, identificado(a) con <?= mb_strtolower($movement->customer->type_document_name ?? "", 'UTF-8') ?> número <?= number_format($movement->customer->number_document, 0, ",", ".") ?>
-                expedida en <?= $movement->customer->issued ?>. quien en para efectos de este instrumento, se denominara, en
-                adelante como <b>EL COMPRADOR</b> y de otra parte, la Empresa denominada <?= $company->name ?>, NIT No <?= $company->number_nit ?>-<?= $company->dv ?>, inscrita ante la Cámara de Comercio de <?= $company->origin ?>,
-                bajo la matrícula mercantil número <?= number_format($company->business_number, 0, ',', '.') ?> quien en adelante se denominará <b>LA
-                COMPAÑIA</b>, representando legalmente por el señor <?= mb_strtoupper($company->propierty, "UTF-8") ?>,
-                identificado con <?= mb_strtolower($company->type_document->name, "UTF-8"). " ({$company->type_document->abbreviation})" ?>
-                N° <?= number_format($company->number_document, 0, ",", ".") ?> de Bogotá, domiciliado, en
-                Bogotá, se convino libremente la celebración de un <?= $title ?>,
-                que se regirá en lo general por las disposiciones del Código
-                de Civil, art. 1869 en concordancia con el art. 917 del C. de Cio, y las demás leyes
-                Colombianas aplicables al asunto, y las cláusulas que a continuación se determinan,
-                previas las siguientes:
+                Entre los suscritos: <b>(1) IPLANET COLOMBIA S.A.S</b>, sociedad comercial identificada con NIT 900.444.608-8,
+                domiciliada en Bogotá D.C., inscrita en la Cámara de Comercio de Bogotá, representada legalmente por Wilfredo
+                Daza Díaz, mayor de edad, identificado con cédula de ciudadanía 79.745.124 de Bogotá, quien en adelante se
+                denominará <b>LA COMPAÑÍA</b>; y <b>(2) <?= $movement->customer->name ?></b>, mayor de edad, identificado(a) con <?= mb_strtolower($company->type_document->name, "UTF-8"). " ({$company->type_document->abbreviation})" ?>
+                No. <?= number_format($company->number_document, 0, ",", ".") ?> de <?= $movement->customer->issued ?>, quien en adelante se denominará <b>EL COMPRADOR</b>, se celebra el
+                presente <b><?= $title ?></b>, el cual se regirá por lo dispuesto en
+                los artículos 1863, 1869 del Código Civil, 917 del Código de Comercio y demás normas aplicables, atendiendo las
+                siguientes cláusulas:
             </p>
+            <?= $separador ?>
             <p>
                 <b>CONSIDERACIONES:</b>
                 <ol>
                     <li>
-                        Que, la compañía <b><?= $company->name ?> NIT No <?= $company->number_nit ?>-<?= $company->dv ?></b>, en desarrollo de su objeto
-                        social, efectúa diversos tipos de negocios, relacionados con proyectos <b>agrícolas</b>,
-                        actividades que desarrollará a nivel nacional e internacional. 
+                        <b>LA COMPAÑÍA</b> desarrolla actividades agrícolas y agroindustriales, incluyendo programas técnicos para la
+                        producción, manejo y comercialización de cultivos de aguacate Hass y otros productos agrícolas.
                     </li>
                     <li>
-                        La compañía <b><?= $company->name ?></b> ha desarrollado unos métodos específicos de
-                        producción, germinación, así como de manipulación y presentación de cultivos de
-                        aguacate mediante un programa técnico-agrícola que en conjunto constituyen un know
-                        how agrícola y comercial particular logrado mediante la inversión económica en
-                        investigación, así como en virtud de la larga experiencia en el sector, condiciones
-                        específicas del terreno, temperatura, humedad, entre otros; para lograr una mayor
-                        uniformidad en el desarrollo del embrión y por lo tanto una disponibilidad permanente de
-                        aguacate.
+                        <b>LA COMPAÑÍA</b> ha estructurado un programa técnico-agrícola especializado, que incluye procesos de
+                        germinación, manejo, nutrición, poda, sanidad, administración del cultivo y comercialización, constituyendo
+                        un know-how agrícola y comercial propio.
                     </li>
                     <li>
-                        El proceso de germinación y maduración de los frutos objeto de este contrato,
-                        (aguacate) tendrá un tiempo aproximado que en términos generales será de entre 26-30
-                        meses, durante los cuales los frutos y cosechas tendrán las siguientes etapas:
-                        <ol type="a">
-                            <li>- Preparación del terreno y fertilización.</li>
-                            <li>- Siembra.</li>
-                            <li>- Proceso de germinación.</li>
-                            <li>- Administración del desarrollo del árbol (fertilización foliar, fertilización radicular,
-                            poda, entre otros).</li>
-                            <li>- Desarrollo del fruto.</li>
-                        </ol>
-                        No obstante, la duración y el resultado pueden variar en función del tipo de fruto, la
-                        variedad, el tiempo de almacenamiento, la calidad del agua empleada, entre otros
-                        factores.
+                        El aguacate requiere un tiempo estimado <b>de 26 a 30 meses</b> para alcanzar madurez productiva, pudiendo variar
+                        por factores climáticos, ambientales, fitosanitarios, operativos y de manejo técnico
                     </li>
                     <li>
-                        El saber-hacer de la compañía <b><?= $company->name ?></b>, es el resultado de varios años de
-                        experiencia probada y puesta en práctica con rigor y fidelidad, por parte de los miembros
-                        de la compañía en negocios relacionados con diferentes actividades agrícolas y
-                        comerciales, entre las que se cuenta la <b>AGROINDUSTRIA</b>.
+                        <b>EL COMPRADOR</b> declara conocer el programa técnico-agrícola, su viabilidad y su naturaleza de actividad
+                        agrícola sujeta a riesgos inherentes, sin que esto constituya una inversión financiera ni un instrumento
+                        regulado por la Superintendencia Financiera. 
                     </li>
                     <li>
-                        La compañía <b><?= $company->name ?></b> brinda <b>AL COMPRADOR</b> la tranquilidad de ser una
-                        empresa debidamente registrada y sus productos certificados ante el ICA, cumplirá con
-                        todas las disposiciones legales sobre la producción, comercialización y exportación de
-                        productos agrícolas especialmente el <b>aguacate</b>.
+                        Las partes reconocen la confidencialidad de la información técnica, operativa y comercial intercambiada con
+                        ocasión de este contrato.
                     </li>
                     <li>
-                        <b>El COMPRADOR</b>, manifiesta y reconoce haber conocido la viabilidad técnica,
-                        económica y comercial del <b>programa técnico-agrícola</b> antes descrito, y ha recibido toda
-                        la información necesaria sobre la viabilidad del negocio, y se ha hecho una idea real sobre
-                        las eventuales producciones de este, y que ha tenido el tiempo necesario para reflexionar
-                        la viabilidad comercial de estos, y el potencial de tales actividades en el mercado nacional
-                        e internacional.
+                        <b>EL COMPRADOR </b>adquiere frutos futuros provenientes de la producción obtenida en los predios donde <b>LA
+                        COMPAÑÍA</b> desarrolla el programa técnico-agrícola, actualmente ubicados en el municipio de Santa María,
+                        Huila, vereda El Cedral.
                     </li>
                     <li>
-                        Las partes acuerdan proteger la confidencialidad de la información privada o secreta
-                        que llegue a su conocimiento como consecuencia de este convenio y se comprometen a
-                        protegerla, reconociendo su valor y su importancia, salvo que la información sea o pase
-                        al dominio público; o que sea requerida por la orden de una autoridad pública.
-                    </li>
-                    <li>
-                        El <b>Artículo 1863 del código civil</b> prescribe: Modalidades de la compraventa. <i>“La
-                        venta puede ser pura y simple, o bajo condición suspensiva o resolutoria.
-                        Puede hacerse a plazo para la entrega de las cosas o del precio. Puede tener por objeto
-                        dos o más cosas alternativas.
-                        Bajo todos estos respectos se rige por las reglas generales de los contratos, en lo que
-                        no fueren modificadas por las de este título”</i>.
-                        <p>
-                            El <b>Artículo 1869, del código civil</b> habla de la venta de cosa futura, y establece: <i>“La
-                            venta de cosas que no existen, pero se espera que existan, se entenderá hecha bajo la
-                            condición de existir, salvo que se exprese lo contrario, o que por la naturaleza del contrato
-                            aparezca que se compró la suerte”</i>.
-                        </p>
-                        <p>
-                            El <b>Artículo 917 del código de comercio</b> señala: <i>“La venta de cosa futura sólo quedará
-                            perfecta en el momento en que exista, salvo que se exprese lo contrario o que de la
-                            naturaleza del contrato parezca que se compra el alea”</i>.
-                        </p>
-                    </li>
-                    <li>
-                        En tal virtud, teniendo plena capacidad y autonomía para obligarse como persona
-                        natural y jurídica, los anteriormente nombrados formalizan el presente <b><?= $title ?></b>, al tenor de las siguientes clausulas:
+                        Que, dentro del programa técnico-agrícola, <b>LA COMPAÑÍA</b> ha definido la unidad comercial denominada
+                        “<b>Semilla de Oro</b>”, entendida como <b>el derecho a recibir la producción anual estimada de un (1) árbol de
+                        aguacate</b> cultivado dentro del proyecto. La <b>Semilla de Oro no constituye participación societaria ni
+                        instrumento financiero</b>, sino una <b>modalidad de compra anticipada de frutos futuros</b>, sujeta a la variabilidad
+                        natural de la actividad agrícola.
                     </li>
                 </ol>
             </p>
 
+            
+            <?= $separador ?>
+
+            <h3>
+                CLÁUSULAS
+            </h3>
+
+            <h4>
+                PRIMERA. OBJETO
+            </h4>
+
             <p>
-                <b>CLÁUSULA PRIMERA.- OBJETO</b>: El objeto del presente <b><?= $title ?></b> es fijar los términos y condiciones bajo los cuales
+                El objeto del presente <b><?= $title ?></b> es fijar los términos y condiciones bajo los cuales
                 <b>El COMPRADOR</b> hará la compra de cosecha futura a la compañía <b><?= $company->name ?></b>, la cual
                 viene desarrollando de tiempo atrás un <b>programa técnico-agrícola</b> para el aumento
                 diferencial de la producción en el cultivo de aguacates, así como su explotación comercial,

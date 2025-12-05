@@ -8,7 +8,37 @@ body {
 }
 
 .content{
-    padding: 0 80px;
+    padding: 0 40px;
     text-align: justify;
-    font-size: 15px;
+    font-size: 13px;
+}
+
+table{
+    width: 100%;
+}
+
+table td{
+    font-size: 13px;
+    vertical-align: top;
+    width: 50%;
+}
+
+.ql-align-center{
+    text-align: center;
+}
+
+.ql-align-justify{
+    text-align: justify;
+}
+
+.firmas{
+    background-color: red;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+}
+
+.firmas td{
+    background-color: green;
+    width: 50%;
 }

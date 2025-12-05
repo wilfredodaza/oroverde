@@ -19,7 +19,7 @@ class UnitAges extends Migration
         ]);
         $this->forge->addKey('id', TRUE);
         $this->forge->addForeignKey('state_id', 'states', 'id');
-        $this->forge->createTable('unit_ages');
+        $this->forge->createTable('unit_ages', true);
     }
 
     public function down()

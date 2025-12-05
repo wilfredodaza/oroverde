@@ -110,9 +110,24 @@ class Movement extends Model
             $data['data']->detail = !empty($detail) ? $detail[0] : [];
             
             $data['data']->beneficiarios = $this->builder('beneficiaries_movements')
+                    ->select([
+                        'b.*',
+                        'td.name as type_document_name',
+                        'td.abbreviation as type_document_abr',
+                    ])
                     ->where([
                         'movement_id' => $data['data']->id
-                    ])->get()->getResult();
+                    ])
+                    ->join('beneficiaries b', 'b.id = beneficiaries_movements.beneficiary_id', 'left')
+                    ->join('type_documents td', 'td.id = b.type_document_id', 'left')
+                    ->get()->getResult();
+
+            $project = $this->builder('projects')
+                ->where([
+                    'id' => $data['data']->project_id
+                ])->get()->getResult();
+
+            $data['data']->project = !empty($project) ? $project[0] : [];
         }else{
             if(!empty($data['data'])){
                 foreach($data['data'] as $movement){
