@@ -5,6 +5,8 @@
             <br>
             <b>LA EMPRESA</b>
             <br>
+            <b>{{COMPANY.REPRESENTATIVE}}</b>
+            <br>
             {{COMPANY.REPRESENTATIVE_TYPE_DOCUMENT_ABBR}}. {{COMPANY.REPRESENTATIVE_NUMBER}} de {{COMPANY.REPRESENTATIVE_ISSUED}}
             <br>
             <b>Representante legal</b>
