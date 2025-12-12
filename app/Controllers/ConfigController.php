@@ -53,6 +53,7 @@ class ConfigController extends BaseController
             case 'menus':
                 $title = 'Opciones del Menu';
                 $subtitle = 'Listado de opciones de menu.';
+
                 // $this->crud->setTexteditor(['description']);
                 $this->crud->setRelation('references', 'menus', '{option} - {type_menu}');
                 break;

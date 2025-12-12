@@ -85,8 +85,10 @@ class TableController extends BaseController
                     $this->crud->where(['role_id > ?' => 1]);
                     $this->crud->unsetDelete();
                     $this->crud->setFieldUpload('photo', 'assets/upload/images', '/assets/upload/images');
+                    $this->crud->setRelation('customer_id', 'customers', 'name');
                     $this->crud->setRelation('role_id', 'roles', 'name', ['id > ?' => 1]);
                     $this->crud->displayAs([
+                        'customer_id' => 'Cliente',
                         'name'  => 'Nombre',
                         'photo' => 'Foto',
                         'username'  => 'Usuario',
@@ -245,9 +247,9 @@ class TableController extends BaseController
                     $this->crud->addFields($columns);
                     $this->crud->editFields($columns);
 
-                    $this->crud->setActionButton('Valores Edad', 'fa fa-money', function ($row) {
-                        return base_url(['table', 'price_ages', $row->id]);
-                    }, false);
+                    // $this->crud->setActionButton('Valores Edad', 'fa fa-money', function ($row) {
+                    //     return base_url(['table', 'price_ages', $row->id]);
+                    // }, false);
 
                     $this->crud->callbackBeforeInsert(function ($stateParameters) {
                         $stateParameters->data['created_at'] = date('Y-m-d h:i:s');
@@ -290,13 +292,13 @@ class TableController extends BaseController
                     $this->crud->addFields($columns);
                     $this->crud->editFields($columns);
 
-                    $this->crud->setActionButton('Beneficiarios', 'fa fa-users', function ($row) {
-                        return base_url(['table', 'beneficiaries', $row->id]);
-                    }, false);
+                    // $this->crud->setActionButton('Beneficiarios', 'fa fa-users', function ($row) {
+                    //     return base_url(['table', 'beneficiaries', $row->id]);
+                    // }, false);
 
-                    $this->crud->setActionButton('Cuentas', 'fa fa-university', function ($row) {
-                        return base_url(['table', 'bank_accounts', $row->id]);
-                    }, false);
+                    // $this->crud->setActionButton('Cuentas', 'fa fa-university', function ($row) {
+                    //     return base_url(['table', 'bank_accounts', $row->id]);
+                    // }, false);
 
                     $this->crud->callbackBeforeInsert(function ($stateParameters) {
                         $stateParameters->data['created_at'] = date('Y-m-d h:i:s');
@@ -307,6 +309,7 @@ class TableController extends BaseController
                         $stateParameters->data['updated_at'] = date('Y-m-d h:i:s');
                         return $stateParameters;
                     });
+                    $this->crud->unsetDelete();
                     break;
                 case 'customer':
                     $this->crud->where(['id' => session('user')->customer_id]);
@@ -329,14 +332,23 @@ class TableController extends BaseController
                     ]);
 
                     break;
-                case 'beneficiary':
-                    $this->crud->where(['customer_id' => session('user')->customer_id]);
+                case 'beneficiaries':
                     $columns = [
+                        'customer_id',
                         'type_document_id',
                         'name',
                         'number_document',
+                        'issued',
                         'created_at'
                     ];
+                    if(session('user')->role_id == 3){
+                        $this->crud->where(['customer_id' => session('user')->customer_id]);
+                        if (($key = array_search('customer_id', $columns)) !== false) {
+                            unset($columns[$key]);
+                        }
+                        $this->crud->unsetDelete();
+                    }
+
                     $this->crud->columns($columns);
                     if (($key = array_search('created_at', $columns)) !== false) {
                         unset($columns[$key]);
@@ -344,11 +356,13 @@ class TableController extends BaseController
                     $this->crud->editFields($columns);
                     $this->crud->addFields($columns);
                     $this->crud->setRelation('type_document_id', 'type_documents', '{name} - {abbreviation}');
+                    $this->crud->setRelation('customer_id', 'customers', '{name}');
                     $this->crud->displayAs([
+                        'customer_id'       => 'Cliente',
                         'type_document_id'  => 'Tipo de documento',
-                        'name'              => 'Nombre',
-                        'number_document'   => '# Documento',
-                        'issued'            => 'Fecha Expedición',
+                        'name'              => 'Nombre del beneficiario',
+                        'number_document'   => '# Documento del beneficiario',
+                        'issued'            => 'Expedición',
                         'created_at'        => 'Creado'
                     ]);
 
@@ -365,23 +379,33 @@ class TableController extends BaseController
                     });
                     break;
                 case 'accounts':
-                    $this->crud->where(['customer_id' => session('user')->customer_id]);
-                    $this->crud->displayAs([
-                        'state_id'              => 'Estado',
-                        'bank_id'               => 'Banco',
-                        'bank_account_type_id'  => 'Tipo de cuenta',
-                        'name'                  => 'Cuenta',
-                        'number_account'        => '# Cuenta',
-                    ]);
                     
                     $columns = [
+                        'customer_id',
                         'state_id',
                         'bank_id',
                         'bank_account_type_id',
                         'name',
                         'number_account',
                     ];
+                    if(session('user')->role_id == 3){
+                        $this->crud->where(['customer_id' => session('user')->customer_id]);
+                        if (($key = array_search('customer_id', $columns)) !== false) {
+                            unset($columns[$key]);
+                        }
+                        $this->crud->unsetDelete();
+                    }
+
+                    $this->crud->displayAs([
+                        'customer_id'           => 'Cliente',
+                        'state_id'              => 'Estado',
+                        'bank_id'               => 'Banco',
+                        'bank_account_type_id'  => 'Tipo de cuenta',
+                        'name'                  => 'Cuenta',
+                        'number_account'        => '# Cuenta',
+                    ]);
     
+                    $this->crud->setRelation('customer_id', 'customers', '{name}');
                     $this->crud->setRelation('state_id', 'states', 'name', ['code' => 'Default']);
                     $this->crud->setRelation('bank_id', 'banks', 'name');
                     $this->crud->setRelation('bank_account_type_id', 'bank_account_types', '{name} - {code}');
@@ -394,6 +418,76 @@ class TableController extends BaseController
                         $stateParameters->data['customer_id'] = session('user')->customer_id;
                         return $stateParameters;
                     });
+                    break;
+                
+                case 'price_ages':
+                    $columns = [
+                        'unit_productive_id',
+                        'age',
+                        'value',
+                        'created_at'
+                    ];
+                    $this->crud->columns($columns);
+                    if (($key = array_search('created_at', $columns)) !== false) {
+                        unset($columns[$key]);
+                    }
+                    $this->crud->where('product_id IS NULL');
+                    $this->crud->addFields($columns);
+                    $this->crud->editFields($columns);
+                    $this->crud->setRelation('unit_productive_id', 'unit_productives', 'name');
+                    $this->crud->displayAs([
+                        'unit_productive_id'    => 'Unidad productiva',
+                        'age'                   => 'Edad',
+                        'value'                 => 'Valor',
+                        'created_at'            => 'Creado'
+                    ]);
+                    $this->crud->callbackBeforeInsert(function ($stateParameters) {
+                        $stateParameters->data['created_at'] = date('Y-m-d h:i:s');
+                        $stateParameters->data['updated_at'] = date('Y-m-d h:i:s');
+                        return $stateParameters;
+                    });
+                    $this->crud->callbackBeforeUpdate(function ($stateParameters) {
+                        $stateParameters->data['updated_at'] = date('Y-m-d h:i:s');
+                        return $stateParameters;
+                    });
+                    $this->crud->callbackColumn('value', function($value, $row){
+                        return "$ " . number_format($value, 2, ".", ",");
+                    });
+                    break;
+                case 'passwords':
+                    $this->crud->unsetDelete();
+                    $this->crud->unsetEdit();
+                    $this->crud->unsetColumns(['password', 'updated_at']);
+                    $this->crud->fieldType('password', 'password');
+                    $this->crud->addFields(['password']);
+                    $this->crud->callbackBeforeInsert(function ($info){
+                        $info->data['created_at']   = date('Y-m-d H:i:s');
+                        $info->data['updated_at']   = date('Y-m-d H:i:s');
+                        $info->data['temporary']    = 'Si';
+                        $info->data['password']     = password_hash($info->data['password'], PASSWORD_DEFAULT);
+                        $p_model = new Password();
+                        $passwords = $p_model->where(['user_id' => $reference, 'status' => 'active'])->findAll();
+                        foreach ($passwords as $key => $password) {
+                            $p_model->save([
+                                'id'        => $password->id,
+                                'status'    => 'inactive'
+                            ]);
+                        }
+                        return $info;
+                    });
+
+                    $this->crud->defaultOrdering('created_at', 'desc');
+
+                    $this->crud->setRelation('user_id', 'users', 'name');
+
+                    $this->crud->displayAs([
+                        'user_id'       => 'Usuario',
+                        'attempts'      => 'N° Intentos',
+                        'status'        => 'Estado',
+                        'created_at'    => 'Fecha de creación',
+                        'password'      => 'Contraseña',
+                        'temporary'     => 'Temporal'
+                    ]);
                     break;
                 
                 default:
