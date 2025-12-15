@@ -26,3 +26,18 @@
 .dataTables_empty{
     vertical-align: middle;
 }
+
+.menu-item.active.open .menu-toggle{
+    color: var(--primary-color) !important;
+    border-color: var(--primary-ligth) !important;
+    background: var(--primary-ligth) !important;
+}
+
+.menu-item.active.open .menu-toggle::after, .menu-item.active.open .menu-toggle::before{
+    color: var(--primary-color) !important;
+}
+
+.menu-sub .menu-item{
+    margin-left: 10px !important;
+    /* border-right: 3px solid rgb(var(--bs-primary-rgb)); */
+}

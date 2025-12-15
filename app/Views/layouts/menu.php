@@ -1,4 +1,6 @@
-<?php $type_menus = ['Sistema', 'Pagina']; ?>
+<?php
+$type_menus = ['Sistema', 'Pagina'];
+?>
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
         <a href="<?= base_url(['dashboard']) ?>" class="app-brand-link">
@@ -37,7 +39,7 @@
                 </li>
             <?php endif ?>
             <?php foreach($menus as $key => $menu): ?>
-                <?php if(count($menu->sub_menu) == 0): ?>
+                <?php if(count($menu->menu_secundario) == 0): ?>
                     <li class="menu-item <?= isActive($menu->base_url) ?>">
                         <a href="<?= $menu->base_url ?>" class="menu-link">
                             <?php if(!empty($menu->icon)): ?>
@@ -49,7 +51,7 @@
                         </a>
                     </li>
                 <?php else: ?>
-                    <li class="menu-item <?= subActive($menu->id) ?>">
+                    <li class="menu-item <?= subActive($menu->id, 'secundario') ?> primario">
                         <a href="<?= $menu->base_url ?>" class="menu-link menu-toggle">
                             <?php if(!empty($menu->icon)): ?>
                                 <i class="menu-icon tf-icons <?= $menu->icon ?>"></i>
@@ -59,12 +61,29 @@
                             <div data-i18n="<?= $menu->option ?>"><?= $menu->option ?></div>
                         </a>
                         <ul class="menu-sub">
-                            <?php foreach ($menu->sub_menu as $key => $sub_menu): ?>
-                                <li class="menu-item  <?= isActive($sub_menu->base_url) ?>">
-                                    <a href="<?= $sub_menu->base_url ?>" class="menu-link">
-                                        <div data-i18n="<?= $sub_menu->option ?>"><?= $sub_menu->option ?></div>
-                                    </a>
-                                </li>
+                            <?php foreach ($menu->menu_secundario as $key => $menu_secundario): ?>
+                                <?php if(count($menu_secundario->menu_terciario ?? []) == 0): ?>
+                                    <li class="menu-item <?= isActive($menu_secundario->base_url) ?>">
+                                        <a href="<?= $menu_secundario->base_url ?>" class="menu-link">
+                                            <div data-i18n="<?= $menu_secundario->option ?>"><?= $menu_secundario->option ?></div>
+                                        </a>
+                                    </li>
+                                <?php else: ?>
+                                    <li class="menu-item <?= subActive($menu_secundario->id, 'terciario') ?>">
+                                        <a href="<?= $menu_secundario->base_url ?>" class="menu-link menu-toggle">
+                                            <div data-i18n="<?= $menu_secundario->option ?>"><?= $menu_secundario->option ?></div>
+                                        </a>
+                                        <ul class="menu-sub">
+                                            <?php foreach ($menu_secundario->menu_terciario as $key => $menu_terciario): ?>
+                                                <li class="menu-item <?= isActive($menu_terciario->base_url) ?>">
+                                                    <a href="<?= $menu_terciario->base_url ?>" class="menu-link">
+                                                        <div data-i18n="<?= $menu_terciario->option ?>"><?= $menu_terciario->option ?></div>
+                                                    </a>
+                                                </li>
+                                            <?php endforeach ?>
+                                        </ul>
+                                    </li>
+                                <?php endif ?>
                             <?php endforeach ?>
                         </ul>
                     </li>

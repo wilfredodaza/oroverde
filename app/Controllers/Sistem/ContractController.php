@@ -100,6 +100,8 @@ class ContractController extends BaseController
             '{{TITLE}}'     => $contract->title,
             '{{VERSION}}'   => $contract->version,
 
+            '{{FIRMAS}}'                => $firmas,
+
             '{{Numero_Contrato}}'   => $movement->resolution,
 
             '{{SEPARADOR}}'         => '<div style="border-bottom: 2px solid black"></div>',         
@@ -140,13 +142,11 @@ class ContractController extends BaseController
             '{{DAY_CREATED}}'             => date('d', strtotime($movement->created_at)),
             '{{MONTH_CREATED}}'             => date('m', strtotime($movement->created_at)),
             '{{YEAR_CREATED}}'             => date('Y', strtotime($movement->created_at)),
-
-            '{{FIRMAS}}'                => $firmas
         ];
 
         
         $template = str_replace(array_keys($dictionary), array_values($dictionary), $contract->description);
-        $template = str_replace(array_keys($dictionary), array_values($dictionary), $template);
+        // $template = str_replace(array_keys($dictionary), array_values($dictionary), $template);
 
         $template = renderTemplate($template, $dictionary);
 

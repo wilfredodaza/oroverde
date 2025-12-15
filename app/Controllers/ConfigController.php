@@ -7,6 +7,8 @@ namespace App\Controllers;
 use App\Models\Configuration;
 use App\Traits\Grocery;
 
+use App\Models\Menu;
+
 class ConfigController extends BaseController
 {
     use Grocery;
@@ -56,6 +58,15 @@ class ConfigController extends BaseController
 
                 // $this->crud->setTexteditor(['description']);
                 $this->crud->setRelation('references', 'menus', '{option} - {type_menu}');
+
+                $this->crud->callbackColumn('option', function ($value, $row) {
+                    $m_model = new Menu(); 
+                    $menu = $m_model->where(['id' => $row->references])->first();
+                    if(!empty($menu)) {
+                        return "$row->option ($menu->option)";
+                    }
+                    return $row->option;
+                });
                 break;
             case 'roles':
                 $title = 'Roles';

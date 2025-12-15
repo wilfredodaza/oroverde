@@ -32,30 +32,40 @@ function menus($type_menu){
         $data = $m_model->where(['type' => 'primario', 'status' => 'active', 'type_menu' => $type_menu])
             ->orderBy('position', 'ASC')->findAll();
     } else {
-        $data = $permission->select('menus.*')
+        $data = $permission->select(['menus.*'])
             ->where([
                 'role_id'       => session('user')->role_id,
                 'menus.type'    => 'primario',
                 'menus.type_menu' => $type_menu
             ])
-            ->join('menus', 'menus.id = permissions.menu_id')
-            ->join('roles', 'roles.id = permissions.role_id')
+            ->join('menus', 'menus.id = permissions.menu_id', 'left')
+            ->join('roles', 'roles.id = permissions.role_id', 'left')
             ->orderBy('position', 'ASC')
             ->findAll();
     }
 
     foreach ($data as $key => $menu) {
         if (session('user')->role_id == 1) {
-            $menu->sub_menu = $m_model->where([
+            $menu->menu_secundario = $m_model->where([
                 'type'          => 'secundario',
                 'status'        => 'active',
                 'references'    => $menu->id
             ])->orderBy('position', 'ASC')->findAll();
-            foreach ($menu->sub_menu as $key => $sub_menu) {
-                $sub_menu->base_url = urlOption($sub_menu->id);
+            foreach ($menu->menu_secundario as $key => $menu_secundario) {
+                // Cargar menús terciarios para cada menú secundario
+                $menu_secundario->menu_terciario = $m_model->where([
+                    'type'          => 'terciario',
+                    'status'        => 'active',
+                    'references'    => $menu_secundario->id
+                ])->orderBy('position', 'ASC')->findAll();
+                foreach ($menu_secundario->menu_terciario as $key => $menu_terciario) {
+                    $menu_terciario->base_url = urlOption($menu_terciario->id, 'terciario');
+                }
+                // Si tiene menús terciarios, el base_url debe ser JavaScript:void(0)
+                $menu_secundario->base_url = count($menu_secundario->menu_terciario) > 0 ? urlOption() : urlOption($menu_secundario->id, 'secundario');
             }
         }else {
-            $menu->sub_menu = $permission->select('menus.*')
+            $menu->menu_secundario = $permission->select('menus.*')
             ->where([
                 'role_id'       => session('user')->role_id,
                 'menus.type'    => 'secundario',
@@ -65,21 +75,39 @@ function menus($type_menu){
             ->join('roles', 'roles.id = permissions.role_id')
             ->orderBy('position', 'ASC')
             ->findAll();
-            foreach ($menu->sub_menu as $key => $sub_menu) {
-                $sub_menu->base_url = urlOption($sub_menu->id);
+            foreach ($menu->menu_secundario as $key => $menu_secundario) {
+                // Cargar menús terciarios para cada menú secundario
+                $menu_secundario->menu_terciario = $permission->select('menus.*')
+                    ->where([
+                        'role_id'       => session('user')->role_id,
+                        'menus.type'    => 'terciario',
+                        'references'    => $menu_secundario->id
+                    ])
+                    ->join('menus', 'menus.id = permissions.menu_id')
+                    ->join('roles', 'roles.id = permissions.role_id')
+                    ->orderBy('position', 'ASC')
+                    ->findAll();
+                foreach ($menu_secundario->menu_terciario as $key => $menu_terciario) {
+                    $menu_terciario->base_url = urlOption($menu_terciario->id, 'terciario');
+                }
+                // Si tiene menús terciarios, el base_url debe ser JavaScript:void(0)
+                $menu_secundario->base_url = count($menu_secundario->menu_terciario) > 0 ? urlOption() : urlOption($menu_secundario->id, 'secundario');
             }
         }
-        $menu->base_url = count($menu->sub_menu) > 0 ? urlOption() : urlOption($menu->id);
+        $menu->base_url = count($menu->menu_secundario) > 0 ? urlOption() : urlOption($menu->id);
+
+        
+
     }
 
     return $data;
 }
 
-function submenu($refences)
+function submenu($refences, $type = 'secundario')
 {
     $menu = new Menu();
     if (session()->get('user')->role_id == 1) {
-        $data = $menu->where(['type' => 'secundario', 'status' => 'active', 'references' => $refences])
+        $data = $menu->where(['type' => $type, 'status' => 'active', 'references' => $refences])
             ->get()
                 ->getResult();
     } else {
@@ -87,10 +115,9 @@ function submenu($refences)
         $data = $permission->select('menus.*')
             ->where([
                 'role_id'       => session('user')->role_id,
-                'menus.type'    => 'secundario',
+                'menus.type'    => $type,
                 'references'    => $refences
             ])
-            ->where()
             ->join('menus', 'menus.id = permissions.menu_id')
             ->join('roles', 'roles.id = permissions.role_id')
             ->get()
@@ -99,10 +126,10 @@ function submenu($refences)
     return $data;
 }
 
-function countMenu($references)
+function countMenu($references, $type = 'secundario')
 {
     $menu = new Menu();
-    $data = $menu->where(['type' => 'secundario', 'status' => 'active', 'references' => $references])
+    $data = $menu->where(['type' => $type, 'status' => 'active', 'references' => $references])
         ->get()
         ->getResult();
     if (count($data) > 0) {
@@ -111,13 +138,13 @@ function countMenu($references)
     return false;
 }
 
-function urlOption($references = null)
+function urlOption($references = null, $type = 'secundario')
 {
     if ($references) {
         $menu = new Menu();
         $data = $menu->find($references);
         if ($data->component == 'table') {
-            if($data->type_menu == "Pagina" && $data->type == "secundario")
+            if($data->type_menu == "Pagina" && $data->type == $type)
                 $data->url = "{$data->url}/{$data->references}";
             return base_url(["table", $data->url]);
         } else if ($data->component == 'controller') {
@@ -136,17 +163,30 @@ function isActive($data)
     }
 }
 
-function subActive($id){
+function subActive($id, $type = 'secundario'){
     $m_model = new Menu();
     $data = $m_model->where([
-        'type'          => 'secundario',
+        'type'          => $type,
         'status'        => 'active',
         'references'    => $id
     ])->findAll();
     $valid = '';
     foreach($data as $menu){
-        if(base_url(uri_string()) == urlOption($menu->id))
+        if(base_url(uri_string()) == urlOption($menu->id, $type))
             $valid = 'active open';
+        
+        // Si es secundario, también verificar si algún terciario está activo
+        if($type == 'secundario') {
+            $terciarios = $m_model->where([
+                'type'          => 'terciario',
+                'status'        => 'active',
+                'references'    => $menu->id
+            ])->findAll();
+            foreach($terciarios as $terciario){
+                if(base_url(uri_string()) == urlOption($terciario->id, 'terciario'))
+                    $valid = 'active open';
+            }
+        }
     }
     return $valid;
 }

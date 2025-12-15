@@ -186,6 +186,36 @@ class TableController extends BaseController
                     $this->crud->setRelation('unit_age_id', 'unit_ages', '{name}');
 
                     break;
+                
+                case 'events':
+                    $this->crud->where([
+                        'type' => 'medios'
+                    ]);
+                    
+                    $columns = ['title', 'sub_title'];
+                    
+                    $this->crud->setTexteditor(['title', 'sub_title']);
+                    $this->crud->columns($columns);
+                    $this->crud->editFields($columns);
+                    $this->crud->addFields($columns);
+
+
+                    break;
+                case 'events_detail':
+                    $this->crud->where([
+                        'banners_details.type' => 'events'
+                    ]);
+                    
+                    $columns = ['reference', 'orden', 'file', 'url'];
+                    $this->crud->setRelation('reference', 'banners', 'title', ['type' => 'medios']);
+                    $this->crud->setFieldUpload('file', 'master/img/pages/details', '/master/img/pages/details');
+                    $this->crud->columns($columns);
+                    $this->crud->editFields($columns);
+                    $this->crud->addFields($columns);
+                    $this->crud->displayAs([
+                        'reference' => 'Medio'
+                    ]);
+                    break;
                 default:
                     break;   
             }
