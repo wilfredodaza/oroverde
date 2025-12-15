@@ -14,7 +14,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-    <title><?= $this->renderSection('title') ?></title>
+      <title><?= $this->renderSection('title') ?> | <?= isset(configInfo()['name_app']) && !empty(configInfo()['name_app']) ? configInfo()['name_app'] : "Name App" ?></title>
 
     <meta name="description" content="" />
 
