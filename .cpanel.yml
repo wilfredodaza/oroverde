@@ -1,6 +1,6 @@
 deployment:
   tasks:
-    - export DEPLOYPATH=/home7/oroverde/public_html
+    - export DEPLOYPATH=/home7/sinergiaverde/public_html
     - /bin/cp -R app $DEPLOYPATH
     - /bin/cp -R public $DEPLOYPATH
     - /bin/cp -R tests $DEPLOYPATH
