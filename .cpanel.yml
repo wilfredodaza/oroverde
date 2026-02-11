@@ -1,6 +1,10 @@
 deployment:
   tasks:
-    - export DEPLOYPATH=/home2/sinergiaverde/public_html/
-    - /bin/mkdir -p $DEPLOYPATH
-    - /usr/bin/rsync -av --delete --exclude ".htaccess" ./public/ $DEPLOYPATH
-    - /bin/cp -f ./public/.htaccess $DEPLOYPATH 2>/dev/null || true
+    - export DEPLOYPATH="$HOME/public_html/"
+    - /bin/mkdir -p "$DEPLOYPATH"
+    - /bin/echo "DEPLOY OK: $(/bin/date) | USER=$(whoami) | HOME=$HOME" > "$DEPLOYPATH/__deploy_ok.txt"
+    - /bin/pwd > "$DEPLOYPATH/__pwd.txt"
+    - /bin/ls -la > "$DEPLOYPATH/__ls_repo_root.txt"
+    - /bin/ls -la public > "$DEPLOYPATH/__ls_public.txt" 2>&1 || true
+    - /usr/bin/rsync -av --delete ./public/ "$DEPLOYPATH" > "$DEPLOYPATH/__sync_log.txt" 2>&1 || true
+
