@@ -104,14 +104,6 @@ class ContractController extends BaseController
         $discount = ($percentage / 100) * $value;
         $amount_discount = $value - $discount;
 
-        /*
-                    echo '<pre>';
-                    //print_r(session('user'));
-                    print_r ($discount);
-                    echo '</pre>';
-                    */
-        //log_message('debug', 'Discount: ' . print_r($discount, true));
-
 
         $dictionary = [
             '{{TITLE}}'     => $contract->title,

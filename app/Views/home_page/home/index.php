@@ -105,10 +105,8 @@
     <?= view('home_page/sections/events', [
         'events'    => $events
     ]) ?>
-
     <?= view('home_page/sections/contacts') ?>
 
-    
 
 <?= $this->endSection() ?>
 
@@ -116,7 +114,7 @@
 
 <?= $this->section('scripts'); ?>
     <script async defer
-        src="https://maps.googleapis.com/maps/api/js?key=<?= env('key.google_maps', strtotime(date('Y-m-d H:i:s'))) ?>">
+    src="https://maps.googleapis.com/maps/api/js?key=<?= env('key.google_maps') ?>&callback=initMap">
     </script>
     <script src="<?= base_url(["master/js/home-page/index.js?v=".getCommit()]) ?>"></script>
 <?= $this->endSection() ?>
