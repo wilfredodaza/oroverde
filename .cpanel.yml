@@ -7,4 +7,3 @@ deployment:
     - /bin/ls -la > "$DEPLOYPATH/__ls_repo_root.txt"
     - /bin/ls -la public > "$DEPLOYPATH/__ls_public.txt" 2>&1 || true
     - /usr/bin/rsync -av --delete ./public/ "$DEPLOYPATH" > "$DEPLOYPATH/__sync_log.txt" 2>&1 || true
-

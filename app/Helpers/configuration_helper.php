@@ -151,6 +151,21 @@ function porcentajeALetras($numero)
     return mb_strtoupper(ucfirst("$textoEntero por ciento"));
 }
 
+function quantityLetter($numero)
+{
+    $formatter = new NumberFormatter("es", NumberFormatter::SPELLOUT);
+
+    // Separar parte entera y decimal
+    $partes = explode('.', number_format($numero, 2, '.', ''));
+    $entero = intval($partes[0]);
+
+    // Convertir parte entera
+    $textoEntero = ucfirst($formatter->format($entero));
+
+    return "$textoEntero";
+    
+}
+
 function numberYearLetter($numero)
 {
     $formatter = new NumberFormatter("es", NumberFormatter::SPELLOUT);

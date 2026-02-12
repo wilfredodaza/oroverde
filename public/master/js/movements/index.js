@@ -7,6 +7,7 @@ $(() => {
     switch (pageInfo.id) {
         case '1':
         case '5':
+
             columns = [
                 {title: 'Resolución', data: 'resolution'},
                 {title: 'Proyecto', data: 'project.name'},
@@ -151,6 +152,7 @@ $(() => {
     load_datatable(url, columns, buttons, `dashboard/movements/${pageInfo.id}`)
 })
 
+/////////////////////Editar-Eliminar de movements///////////////////////
 function action(movement){
     let action = ``;
     switch (movement.type_movement_id) {
@@ -166,27 +168,48 @@ function action(movement){
             `
             break;
         case '2':
-            action = `
-                <a href="${base_url(['dashboard/contract', movement.id])}" target="_blank" class="btn btn-sm btn-text-secondary rounded-pill btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-success" data-bs-original-title="Ver contrato"><i class="ri-contract-line"></i></a>
-                ${
-                    movement.state_id != 11 ? `
-                        <a href="javascript:void(0);" class="btn btn-sm btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false"><i class="ri-more-2-line"></i></a>
-                        <ul class="dropdown-menu dropdown-menu-end m-0" style="">
-                            <li><a href="javascript:void(0);" onclick="editMovement(${movement.id})" class="dropdown-item">Editar</a></li>
-                            ${movement.state_id == 9 ? `<li><a onclick="payments(${movement.id})" href="javascript:void(0)" class="dropdown-item">Pagar</a></li>` : ""}
-                            ${movement.support ? `<li><a target="_blank" href="${base_url(['uploads', movement.support])}" class="dropdown-item">Soporte</a></li>` : ""}
-                            <li><a href="javascript:void(0);" onclick="deleteMovement(${movement.id})" class="dropdown-item text-danger">Rechazar</a></li>
-                        </ul>
-                    ` : ""
-                }
-            `
-            break;
+            if (USER_ROLE_ID === 3) {
+                action = `
+                    <a href="${base_url(['dashboard/contract', movement.id])}" 
+                    target="_blank" 
+                    class="btn btn-sm btn-text-secondary rounded-pill btn-icon"
+                    data-bs-toggle="tooltip"
+                    data-bs-placement="top"
+                    data-bs-custom-class="tooltip-success"
+                    data-bs-original-title="Ver contrato">
+                        <i class="ri-contract-line"></i>
+                    </a>
+                `;
+                break;
+            }else{
+                    action = `
+                    <a href="${base_url(['dashboard/contract', movement.id])}" target="_blank" class="btn btn-sm btn-text-secondary rounded-pill btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-success" data-bs-original-title="Ver contrato"><i class="ri-contract-line"></i></a>
+                    ${
+                        movement.state_id != 11 ? `
+                            <a href="javascript:void(0);" class="btn btn-sm btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false"><i class="ri-more-2-line"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end m-0" style="">
+                            
+                                <li><a href="javascript:void(0);" onclick="editMovement(${movement.id})" class="dropdown-item">Editar</a></li>
+                                ${movement.state_id == 9 ? `<li><a onclick="payments(${movement.id})" href="javascript:void(0)" class="dropdown-item">Pagar</a></li>` : ""}
+                                ${movement.support ? `<li><a target="_blank" href="${base_url(['uploads', movement.support])}" class="dropdown-item">Soporte</a></li>` : ""}
+                                <li><a href="javascript:void(0);" onclick="deleteMovement(${movement.id})" class="dropdown-item text-danger">Rechazar</a></li>
+                            </ul>
+                        ` : ""
+                    }
+                `
+                break;
+            }
+            
         case '3':
             action = `
                 ${
                     movement.state_id != 13 ? `
-                        <a href="javascript:void(0);" onclick="editMovement(${movement.id})" class="btn btn-sm btn-text-secondary rounded-pill btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-info" data-bs-original-title="Editar ${movement.resolution}"><i class="ri-edit-2-line"></i></a>
-                        <a href="javascript:void(0);" onclick="deleteMovement(${movement.id})" class="btn btn-sm btn-text-secondary rounded-pill btn-icon" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="tooltip-info" data-bs-original-title="Rechazar ${movement.resolution}"><i class="ri-delete-back-2-line"></i></a>
+                        <a href="javascript:void(0);" class="btn btn-sm btn-text-secondary rounded-pill btn-icon dropdown-toggle hide-arrow" data-bs-toggle="dropdown" aria-expanded="false"><i class="ri-more-2-line"></i></a>
+                            <ul class="dropdown-menu dropdown-menu-end m-0" style="">
+                                <li><a href="javascript:void(0);" onclick="editMovement(${movement.id})" class="dropdown-item">Editar</a></li>
+                                ${movement.support ? `<li><a target="_blank" href="${base_url(['uploads', movement.support])}" class="dropdown-item">Soporte</a></li>` : ""}
+                                <li><a href="javascript:void(0);" onclick="deleteMovement(${movement.id})" class="dropdown-item text-danger">Rechazar</a></li>
+                            </ul>
                     ` : ""
                 }
             `

@@ -34,6 +34,8 @@ class MovementsController extends BaseController
     protected $tm_model;
     protected $up_model;
     protected $pm_model;
+    protected $columns = [];
+    protected $bm_model;
 
     public function __construct(){
         $this->dataTable    = (object) [
@@ -330,6 +332,7 @@ class MovementsController extends BaseController
                 'type_movement_id'  => $data->type_movement,
                 'state_id'          => isset($data->state) && !empty($data->state) ? $data->state : null,
                 'user_id'           => session('user')->id,
+                'role_id'           => session('user')->role_id,
                 'customer_id'       => isset($data->customer) && !empty($data->customer) ? $data->customer : null,
                 'project_id'        => isset($data->project) && !empty($data->project) ? $data->project : null,
                 'movement_id'       => isset($data->movement_reference) && !empty($data->movement_reference) ? $data->movement_reference : null,
@@ -339,6 +342,9 @@ class MovementsController extends BaseController
                 'date'              => isset($data->fecha) && !empty($data->fecha) ? $data->fecha : date('Y-m-d'),
                 'support'           => isset($newName) ? $newName : null,
             ];
+
+            dd(session('user')->role_id);
+
 
             switch ($data->type_movement) {
                 case '1':
@@ -513,7 +519,7 @@ class MovementsController extends BaseController
                     }
                     break;
                 case '5':
-
+                    
                     $project = $this->p_model->find($data->project);
 
                     $movement_load = $this->m_model->where([

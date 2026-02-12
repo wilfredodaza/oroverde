@@ -64,6 +64,10 @@
     </script>
     <?= $this->include('layouts/js_datatables') ?>
 
-
+    <script>const USER_ROLE_ID = <?= (int) session('user')->role_id ?>;</script>
+    <!--
+    <script>
+    console.log("ROL USUARIO:", <?= (int) session('user')->role_id ?>);
+</script>-->
     <script src="<?= base_url(['master/js/movements/index.js?v='.getCommit()]) ?>"></script>
 <?= $this->endsection('javaScript') ?>

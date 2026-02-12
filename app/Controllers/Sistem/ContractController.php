@@ -14,7 +14,9 @@ use App\Models\Company;
 
 class ContractController extends BaseController
 {
-    
+    protected $c_model;
+    protected $m_model;
+    protected $co_model;
     use ResponseTrait;
 
     public function __construct(){
@@ -96,6 +98,21 @@ class ContractController extends BaseController
 
         $firmas = view('pdf/firmas');
 
+        $value = (float) $movement->value;
+        $percentage = (float) $movement->percentage_discount;
+
+        $discount = ($percentage / 100) * $value;
+        $amount_discount = $value - $discount;
+
+        /*
+                    echo '<pre>';
+                    //print_r(session('user'));
+                    print_r ($discount);
+                    echo '</pre>';
+                    */
+        //log_message('debug', 'Discount: ' . print_r($discount, true));
+
+
         $dictionary = [
             '{{TITLE}}'     => $contract->title,
             '{{VERSION}}'   => $contract->version,
@@ -124,13 +141,18 @@ class ContractController extends BaseController
             '{{CUSTOMER.TYPE_DOCUMENT_ABBR}}'   => "{$movement->customer->type_document_abr}",
             '{{CUSTOMER.NUMBER}}'               => number_format($movement->customer->number_document, 0, ',', '.'),
             '{{CUSTOMER.ISSUED}}'               => $movement->customer->issued,
+            '{{PROGRAM_NAME}}'                  => $movement->project->name,
 
             // Datos venta
+            '{{QUANTITY_LETTER}}'               => quantityLetter($movement->detail->quantity),
             '{{QUANTITY}}'                      => number_format($movement->detail->quantity, 0, ',', '.'),
             '{{AMOUNT_LETTER}}'                 => numberLetter($movement->value),
             '{{AMOUNT}}'                        => number_format($movement->value, 0, ',', '.'),
             '{{PERCENTAGE_LETTER}}'             => porcentajeALetras($movement->project->percentage_profit),
             '{{PERCENTAGE}}'                    => number_format($movement->project->percentage_profit, 2, '.', '.'),
+            '{{PERCENTAGE_DISCOUNT}}'           => number_format($movement->percentage_discount, 2, '.', '.'),
+            '{{AMOUNT_LETTER_DISCOUNT}}'        => numberLetter($amount_discount),
+            '{{AMOUNT_DISCOUNT}}'               => number_format($amount_discount, 0, ',', '.'),
             '{{REMAINING_PERCENTAGE_LETTER}}'   => porcentajeALetras(100 - (float)$movement->project->percentage_profit),
             '{{REMAINING_PERCENTAGE}}'          => number_format(100 - (float)$movement->project->percentage_profit, 2, '.', '.'),
             '{{YEARS_LETTER}}'                  => numberYearLetter($movement->project->project_years),
