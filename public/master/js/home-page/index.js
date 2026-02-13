@@ -1,39 +1,24 @@
-function loadMapa(){
+function renderMapIfPresent() {
+  const mapEl = document.getElementById("map");
+  if (!mapEl) return; // si no hay mapa en esta vista, no hagas nada
 
-    const contact = getContact();
+  // espera a que google exista (API ya cargó)
+  if (!window.google || !google.maps) {
+    setTimeout(renderMapIfPresent, 200);
+    return;
+  }
 
-    let miUbicacion = { lat: 4.60971, lng: -74.08175 }; // Valor por defecto (Bogotá)
+  const contact = typeof getContact === "function" ? getContact() : null;
 
-    if (contact?.description?.includes(";")) {
-      const [lat, lng] = contact.description.split(";").map(Number);
-      miUbicacion = { lat, lng }; // Sobrescribe si hay coordenadas válidas
-    }
+  let miUbicacion = { lat: 4.60971, lng: -74.08175 };
+  if (contact?.description?.includes(";")) {
+    const [lat, lng] = contact.description.split(";").map(Number);
+    if (!Number.isNaN(lat) && !Number.isNaN(lng)) miUbicacion = { lat, lng };
+  }
 
-    const mapa = new google.maps.Map(document.getElementById("map"), {
-      zoom: 14,
-      center: miUbicacion,
-    });
-
+  const map = new google.maps.Map(mapEl, { zoom: 14, center: miUbicacion });
+  new google.maps.Marker({ position: miUbicacion, map });
 }
 
-window.initMap = function () {
-
-    const contact = getContact();
-
-    let miUbicacion = { lat: 4.60971, lng: -74.08175 }; // Bogotá default
-
-    if (contact?.description?.includes(";")) {
-        const [lat, lng] = contact.description.split(";").map(Number);
-        miUbicacion = { lat, lng };
-    }
-
-    const mapa = new google.maps.Map(document.getElementById("map"), {
-        zoom: 14,
-        center: miUbicacion,
-    });
-
-    new google.maps.Marker({
-        position: miUbicacion,
-        map: mapa
-    });
-};
+// cuando carga la página
+window.addEventListener("load", renderMapIfPresent);

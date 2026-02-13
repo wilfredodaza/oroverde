@@ -20,7 +20,7 @@
             <a href="<?= base_url() ?>" class="app-brand-link">
             <span class="app-brand-logo demo">
                 <span class="d-flex align-items-center justify-content-center flex-wrap">
-                    <img src="<?= base_url(['master/img/logos/', isset($config->menu) && !empty($config->menu) ? $config->menu : 'logo2.png']) ?>" alt="" height="45">
+                    <img src="<?= base_url(['master/img/logos/', isset($config->menu) && !empty($config->menu) ? $config->menu : 'logo2.png']) ?>" alt="" height="70">
                     <?php if(isset($config->title_logo) && !empty($config->title_logo)): ?>
                         <h2 class="w-100 mb-0 text-center text-primary"><?= strtolower(preg_replace('/\s+/', '', $config->title_logo))?></h2>
                     <?php endif ?>

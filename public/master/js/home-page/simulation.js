@@ -26,22 +26,32 @@ function calculate_data(){
                 <td class="grey lighten-3">Cantidad de Semillas de oro</td>
                 <td>${formatearMiles(quantity)}</td>
             </tr>
+            
             <tr>
                 <td class="grey lighten-3">Descuento</td>
                 <td>${discount} %</td>
+                <td class="grey lighten-3">Cosecha estimada en 20 años (kg)</td>
+                <td>${formatearMiles(total_quantity)}</td>
+                <!--
                 <td class="grey lighten-3">Valor Total Compra Sin Descuento</td>
                 <td>${formatPrice(value_undiscount)}</td>
+                -->
             </tr>
+            
+            <!--
             <tr>
                 <td class="grey lighten-3">Valor Total Compra Con Descuento</td>
                 <td>${formatPrice(value)}</td>
                 <td class="grey lighten-3">Ahorro en tu compra</td>
                 <td>${formatPrice(value_discount)}</td>
             </tr>
+            -->
+
             <tr>
-                <td class="grey lighten-3">Cosecha estimada en 20 años (kg)</td>
-                <td>${formatearMiles(total_quantity)}</td>
+                <!--
                 <td class="grey lighten-3">Valor estimado de esa producción hoy: <br>${formatearMiles(total_quantity)} * ${formatPrice(prom_price)}</td>
+                -->
+                <td class="grey lighten-3">Ingreso Proyectado: </td>
                 <td>${formatPrice(total_quantity * prom_price)}</td>
             </tr>
         </tbody>

@@ -100,7 +100,6 @@
 <?= $this->section('scripts'); ?>
     <script src="<?= base_url(['assets/vendor/libs/masonry/masonry.js']) ?>"></script>
     <script src="<?= base_url(['assets/vendor/libs/plyr/plyr.js']) ?>"></script>
-
     <script>
     document.addEventListener('DOMContentLoaded', function () {
         const masonryGrids = document.querySelectorAll('[data-masonry]');
@@ -142,4 +141,11 @@
     </script>
 
 
+<?= $this->endSection() ?>
+
+<?= $this->section('scripts'); ?>
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=<?= env('key.google_maps') ?>">
+    </script>
+    <script src="<?= base_url(["master/js/home-page/index.js?v=".getCommit()]) ?>"></script>
 <?= $this->endSection() ?>

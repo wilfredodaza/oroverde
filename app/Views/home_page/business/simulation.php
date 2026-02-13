@@ -39,13 +39,13 @@
                         <!-- <small class="text-light fw-medium">Cantidad de Vites</small> -->
                         <div id="slider-product" class="my-6"></div>
                     </div>
-                    
+                    <!--
                     <h5 class="card-header">Precio por edad | <?= $product->unit_age_name ?></h5>
                     <div class="card-body">
-                        <!-- <small class="text-light fw-medium">Cantidad de Vites</small> -->
+                        <small class="text-light fw-medium">Cantidad de Vites</small> Esto estaba comentariado
                         <div id="slider-product-price" class="my-6"></div>
                     </div>
-                    
+                    -->
                     <h5 class="card-header">Descuento</h5>
                     <div class="card-body">
                         <!-- <small class="text-light fw-medium">Descuento</small> -->
@@ -85,7 +85,7 @@
             </div> -->
         </div>
         <div class="d-flex justify-content-center w-100 mt-5">
-            <a href="javascript:void(0)" onclick="simulate()" class="btn btn-lg btn-secondary waves-effect waves-light text-primary">Calcular</a>
+            <a href="javascript:void(0)" onclick="simulate()" class="btn btn-lg btn-secondary waves-effect waves-light text-primary">Haz crecer tu inversión</a>
         </div>
     </div>
 
