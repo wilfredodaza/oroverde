@@ -30,8 +30,8 @@ function calculate_data(){
             <tr>
                 <td class="grey lighten-3">Descuento</td>
                 <td>${discount} %</td>
-                <td class="grey lighten-3">Cosecha estimada en 20 años (kg)</td>
-                <td>${formatearMiles(total_quantity)}</td>
+                <td class="grey lighten-3">Precio Total</td>
+                <td>${formatearMiles(value)}</td>
                 <!--
                 <td class="grey lighten-3">Valor Total Compra Sin Descuento</td>
                 <td>${formatPrice(value_undiscount)}</td>
@@ -52,7 +52,7 @@ function calculate_data(){
                 <td class="grey lighten-3">Valor estimado de esa producción hoy: <br>${formatearMiles(total_quantity)} * ${formatPrice(prom_price)}</td>
                 -->
                 <td class="grey lighten-3">Ingreso Proyectado: </td>
-                <td>${formatPrice(total_quantity * prom_price)}</td>
+                <td>${formatPrice(total_quantity * prom_price )}</td>
             </tr>
         </tbody>
     `
